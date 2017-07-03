@@ -1,0 +1,45 @@
+<?php
+$aBurial = $db->get_row("SELECT Message_ID AS ID, Name, Square FROM Message2020 WHERE Checked = 1 AND Message_ID = ".(int)$_COOKIE['burial'],ARRAY_A);
+
+if(!$current_user['User_ID']){
+    $ignore_all = 1;
+}else{
+    $aCB = explode(',',$current_user['Burials']);
+}
+if($current_user['User_ID'] && !in_array ($aBurial['ID'],$aCB) && !@$_COOKIE['laying']){
+    $ignore_all = 1;
+    header("Location: /podtverzhdenie/");
+}
+
+if (!nc_module_check_by_keyword("netshop")) {
+    die (NETCAT_MODULE_NETSHOP_MODULEUNCHECKED);
+}
+$netshop = nc_netshop::get_instance();
+foreach($netshop->cart->get_items() AS $item){
+    $aCartItems[] = $item['RowID'];
+}
+
+// Показывать в списке отключенные товары, если у них имеются включенные варианты:
+if (!$admin_mode) {
+    $ignore_check = true;
+    $query_where = "(a.`Checked` = 1 OR (a.`Checked` = 0 AND (" .
+        "SELECT `Message_ID` FROM `Message$classID` as `child` " .
+        " WHERE `child`.`Parent_Message_ID` = a.`Message_ID` AND `child`.`Checked` = 1 " .
+        " LIMIT 1" .
+        ")))";
+}
+
+if(@$_COOKIE['laying']){
+    $query_where .= ($query_where?" AND ":NULL) . "a.Article = 'laying'";
+}
+
+// Параметр request_type установлен, если страница запрошена скриптом переключения варианта товара
+$request_type = $nc_core->input->fetch_get_post('request_type');
+
+$f_Photos_tpl = array(
+    'prefix' => "<div class='gal cf'>",
+    'record' => "<div><a href='%Path%' target='_blank' class='image-link'><img src='%Preview%' /></a></div>",
+    'divider' => " ",
+    'suffix' => "</div>"
+);
+

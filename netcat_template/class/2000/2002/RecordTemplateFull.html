@@ -1,0 +1,72 @@
+<section>
+<?
+$item = new nc_netshop_item($resMsg);
+nc_netshop::get_instance()->goodslist_recent->add($f_RowID, $classID);
+
+echo $f_AdminButtons;
+echo nc_netshop_item_variant_admin_table($item);
+?>
+                <div class="item_img">
+                <?if($item['Image']){?>
+                    <img src="<?=$item['Image_preview_url']?>">
+                <?}?>
+                </div>
+                <div class="item_attr">
+                    <h5>Цена: <?= $item['ItemPriceF'] ?></h5>
+                    <p class="petit">есть в наличии</p>
+<?
+    $selectors = new nc_netshop_item_variant_selector($item, array('Color', 'Size'));
+    echo $selectors->init(array(
+        'replace_location' => false,
+        'updated_regions' => '.variable-part',
+        'on_update' => ''
+    ));
+?>  
+<script>
+$(function(){
+$('#size-selector, #color-selector').on('change',function(){showButton()})
+});
+function showButton(){
+size = $('#size-selector option:selected');
+color = $('#color-selector option:selected');
+if(size.val() != '' && color.val() != ''){
+    $('#button-container').css('visibility','visible');
+}else{
+    $('#button-container').css('visibility','hidden');
+}
+}
+</script>
+                <form  class='variable-part' action="<?= nc_modules("netshop")->get_add_to_cart_url() ?>" method="post">
+                <input type="hidden" name="redirect_url" value="<?= nc_message_link($item['Message_ID'], $item['Class_ID']) ?>"/>
+                <input type="hidden" name="cart_mode" value="add"/>
+                <input type="hidden" name="items[]" value="<?= $item['Class_ID']; ?>:<?= $item['Message_ID']; ?>"/>
+                <?=
+                        $selectors->by_template('Size', array(
+                            'prefix' => "<select id='size-selector'>\n",
+                            'first' => "<option value=''>---размер---</option>",
+                            'active' => "<option value='%URL'>%NAME</option>",
+                            'active_link' => "<option value='%URL' selected>%NAME</option>",
+                            'unactive' => "<option value='%URL'>%NAME</option>",
+                            'suffix' => "</select>\n",
+                            'divider' => "\n",
+                 )); ?>                
+                <?=
+                        $selectors->by_template('Color', array(
+                            'prefix' => "<select id='color-selector'>\n",
+                            'first' => "<option value=''>---цвет---</option>",
+                            'active' => "<option value='%URL'>%NAME</option>",
+                            'active_link' => "<option value='%URL' selected>%NAME</option>",
+                            'unactive' => "<option value='%URL'>%NAME</option>",
+                            'suffix' => "</select>\n",
+                            'divider' => "\n",
+                 )); ?>                
+<div id='button-container'>
+                    <label>Кол-во для заказа</label>
+                    <input type="number" name="qty" min="0" placeholder="1">
+                    <button type='submit'>В корзину</button>
+</div>
+                 
+</form>
+                </div>
+
+</section>

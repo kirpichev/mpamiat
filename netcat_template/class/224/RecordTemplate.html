@@ -1,0 +1,44 @@
+<?/* Служебная часть */for ($f_RowNum = 0; $f_RowNum < $rowCount; $f_RowNum++) {    if($fetch_row[$f_RowNum] instanceof Iterator) {        extract($fetch_row[$f_RowNum]->to_array(), EXTR_PREFIX_ALL, "f");    } else {        extract($fetch_row[$f_RowNum], EXTR_PREFIX_ALL, "f");    }    foreach($iteration_RecordTemplate[$f_RowNum] as $value) {        extract($value);    }    eval($cc_env["convert2txt"]);    ob_start();/* Конец служебной части */?>
+<?
+    $netshop = nc_netshop::get_instance();
+    $order = $netshop->load_order($f_RowID);
+?>
+<tr style="<?=($f_RowNum % 2 ? '' : 'background-color: #EEE;')?>">
+<td style="width: 70%;">
+    <h3>
+    <a href="<?=$fullLink?>">Заказ №<?=$f_RowID?></a> от <?=$f_Created_day?> <?=$months[(int)$f_Created_month]?> <?=$f_Created_year?> года
+    | <a href='' class='show-order-contents' data-alt='Скрыть состав заказа'>Показать состав заказа</a>
+    </h3>
+<div style='display:none' class='my-order-contents'>
+<table>
+<tr>
+<th>Наименование</th>
+<th>Цена за ед., руб.</th>
+<th>Кол-во</th>
+<th>Стоимость, руб.</th>
+</tr>
+<?
+$aOrderItems = $order->get_items();
+foreach ($aOrderItems as $position) {
+$sItemName = $position['Name'] . 
+($position['Size'] || $position['Color']?" (":NULL) . 
+($position['Size']?$position['Size']:NULL) . 
+($position['Size'] && $position['Color']?", ":NULL) . 
+($position['Color']?$position['Color']:NULL) .
+($position['Size'] || $position['Color']?")":NULL);
+echo "<tr>";
+echo "<td>".($position['URL']?"<a href='".$position['URL']."'>".$sItemName."</a>":$sItemName)."</td>";
+echo "<td>".$position['ItemPrice']."</td>";
+echo "<td>".$position['Qty']."</td>";
+echo "<td>".($position['ItemPrice'] * $position['Qty'])."</td>";
+echo "</tr>";
+}
+#print_r($aOrderItems);
+?>
+</table>
+</div>
+Стоимость заказа: <b><?=number_format($order->get_totals(), 0, ',', ' ')?> руб.</b>
+</td>
+<td style='text-align:right'><span>Статус заказа: </span><b><?=($f_Status ? $f_Status : "Новый")?></b></td>
+</tr>
+<?/* Служебная часть */    echo nc_finishing_RecordTemplate(ob_get_clean(), $inside_admin, $classID, $f_RowID, $parent_message, $cc, $cc_env["Class_Name"], $no_cache_marks);}/* Конец служебной части */?>

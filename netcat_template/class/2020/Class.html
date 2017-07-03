@@ -1,0 +1,54 @@
+<!-- FormPrefix --><? echo $f_AdminCommon; ?>
+
+<?if(!$dt){?>
+<?=nc_objects_list($sub,$cc,'nc_ctpl=2021')?>
+<?}else{?>
+<p style='margin-bottom:20px;padding:5px;background:#eee' class='cf'>
+Люди, родившиеся или умершие <b>
+<?
+    if($iY && $iM && $iD){
+        $aM = getMonth(2);
+        echo $iD." ".mb_strtolower($aM[(int)$iM]);
+    }
+    if($iY && $iM && !$iD){
+        $aM = getMonth(3);
+        echo "в ".mb_strtolower($aM[(int)$iM]);
+    }
+    if($iY && !$iM && !$iD){
+        $aM = getMonth(3);
+        echo "в ".$iY." году";
+    }
+?>
+</b>
+<a href='<?=$subLink?>' style='font-size:12px;float:right;'>сбросить фильтр</a>
+</p>
+<?}?>
+<ul class='tomb cf'><!-- /FormPrefix -->
+
+<!-- RecordTemplate --><li class='cf'><div class='tomb_li_inner'>
+<? echo $f_AdminButtons; ?>
+<div class="photo"><a href='<?=$fullLink?>'><img  style="-webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); -ms-filter: grayscale(100%); -o-filter: grayscale(100%); filter: grayscale(100%); filter: gray;" src="<?=RESIZER($f_Photo,150,150,1)?>" alt="<?=$f_Name?>"></a></div>
+<div class="name"><a href='<?=$fullLink?>'><?=$f_Name?></a></div>
+<div class="dt">
+<?if($f_DOB){?>
+    <?=($f_DOB_year == $iY?"<b>":NULL)?>
+    <?=$f_DOB_day?>.<?=$f_DOB_month?>.<?=$f_DOB_year?>
+    <?=($f_DOB_year == $iY?"</b>":NULL)?>
+<?}?>
+<?if($f_DOB && $f_DOD){?> &mdash; <?}?>
+<?if($f_DOD){?>
+    <?=($f_DOD_year == $iY?"<b>":NULL)?>
+    <?=$f_DOD_day?>.<?=$f_DOD_month?>.<?=$f_DOD_year?>
+    <?=($f_DOD_year == $iY?"</b>":NULL)?>
+<?}?>
+</div>
+<div class="cemetery"><?=$f_Burial?></div>
+</div></li><!-- /RecordTemplate -->
+
+<!-- FormSuffix --></ul>
+
+<p>
+Если вы не нашли нужное вам захоронение, вы можете <a href='/add/'>добавить его в нашу базу через форму</a>.
+</p>
+
+<? if ($totRows > $f_RowNum && !$nc_title) { ?><div class='pages'>Страницы: <?= browse_messages($cc_env, 10) ?></div><? } ?><!-- /FormSuffix -->

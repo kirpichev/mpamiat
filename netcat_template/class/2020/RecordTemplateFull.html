@@ -1,0 +1,37 @@
+<div class="tomb_full cf">
+<div class="tomb_left">
+<div class="tomb_full_photo"><img style="-webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); -ms-filter: grayscale(100%); -o-filter: grayscale(100%); filter: grayscale(100%); filter: gray;" src="<?=RESIZER($f_Photo,300,300,1)?>" alt="<?=$f_Name?>"></div>
+<?if($f_BurialPhoto){?><div class="tomb_place_photo"><img src="<?=RESIZER($f_BurialPhoto,300,300,1)?>" alt=""></div><?}?>
+<script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
+<script src="//yastatic.net/share2/share.js"></script>
+<div class="ya-share2" data-services="vkontakte,facebook,odnoklassniki,twitter"></div>
+
+</div>
+<h1 class="tomb_full_name"><?=$f_Name?></h1>
+<div class="tomb_full_dt">
+<?if($f_DOB){?><?=$f_DOB_day?>.<?=$f_DOB_month?>.<?=$f_DOB_year?><?}?>
+<?if($f_DOB && $f_DOD){?> &mdash; <?}?>
+<?if($f_DOD){?><?=$f_DOD_day?>.<?=$f_DOD_month?>.<?=$f_DOD_year?><?}?>
+</div>
+<?if($f_Bio){?><div class="tomb_full_bio"><?=$f_Bio?></div><?}?>
+<div class="tomb_place">Место захоронения: <?=$f_Burial.($f_BurialName?", ".$f_BurialName:NULL)?></div>
+
+<div class="tomb_sertives">
+<h2>Заказать</h2>
+<label><input type='radio' value='1' name='service' class='service_selector' data-serviсe='cart[2028][5]' data-burial='<?=$f_RowID?>' data-url='/catalog/'> Возложение цветов, венков</label>
+
+<label>
+    <input type='radio' value='2' name='service' class='service_selector' data-burial='<?=$f_RowID?>' data-url='/care/'>  Уход за захоронением
+    <span class='note'>Данная услуга оказывается только ответственным за захоронение. Вам необходимо отправить подтверждающие документы.</span>
+</label>
+
+<br>
+<span style="font-size:0.8em;"><label><input type='checkbox' name='confirm' value='1' id='oferta_confirm'> Я согласен с условиями <a href='/oferta/' target='_blank'>публичной оферты</a></label></span>
+<br>
+<button id='service_do' data-oferta='#oferta_confirm' data-selector='.service_selector:checked'>Далее &raquo;</button>
+
+</div>
+
+
+
+</div>

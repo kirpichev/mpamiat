@@ -1,0 +1,25 @@
+<!-- FormPrefix --><?= $f_AdminCommon ?>
+<ul class="li4col items fx">
+<!-- /FormPrefix -->
+
+<!-- RecordTemplate --><?php
+
+    $item = new nc_netshop_item($res[$f_RowNum]);
+    echo $f_AdminButtons;
+    echo nc_netshop_item_variant_admin_table($item);
+
+?>
+<li>
+    <?=($item['Image']?" <div class='img'><a href='".$fullLink."'><img src='".RESIZER($item['Image'], 105, 165)."'></a></div>":NULL)?>
+    <a href="<?=$fullLink?>"><?=$item['Name']?></a>
+    <p><?=$item['Description']?></p>
+    <?if(1 || $current_user['User_ID']){?>
+    <b><?= number_format($item['ItemPrice'],0, ',', ' ') ?>&nbsp;руб.</b>
+    <?}?>
+    <!--div class="button"><input type="text" placeholder="1" required> <a href="#">В корзину</a></div-->
+</li><!-- /RecordTemplate -->
+
+<!-- FormSuffix --></ul>
+
+
+<? if ($totRows > $f_RowNum && !$nc_title) { ?><div class='pages'>Страницы: <?= browse_messages($cc_env, 10) ?></div><? } ?><!-- /FormSuffix -->

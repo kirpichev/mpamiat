@@ -1,0 +1,26 @@
+<? echo $f_AdminCommon; ?>
+
+<?if(!$dt){?>
+<?=nc_objects_list($sub,$cc,'nc_ctpl=2021')?>
+<?}else{?>
+<p style='margin-bottom:20px;padding:5px;background:#eee' class='cf'>
+Люди, родившиеся или умершие <b>
+<?
+    if($iY && $iM && $iD){
+        $aM = getMonth(2);
+        echo $iD." ".mb_strtolower($aM[(int)$iM]);
+    }
+    if($iY && $iM && !$iD){
+        $aM = getMonth(3);
+        echo "в ".mb_strtolower($aM[(int)$iM]);
+    }
+    if($iY && !$iM && !$iD){
+        $aM = getMonth(3);
+        echo "в ".$iY." году";
+    }
+?>
+</b>
+<a href='<?=$subLink?>' style='font-size:12px;float:right;'>сбросить фильтр</a>
+</p>
+<?}?>
+<ul class='tomb cf'>

@@ -1,0 +1,52 @@
+<link href="<?=$sMisc?>css/base5.css" rel="stylesheet">
+<link href="<?=$sMisc?>css/style.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="<?=$sMisc?>css/jquery.confirmon.css"/>
+<link rel="stylesheet" type="text/css" href="<?=$sMisc?>css/jquery.qtip.min.css"/>
+<link rel="stylesheet" type="text/css" href="<?=$sMisc?>css/magnific-popup.css"/>   
+<link rel="stylesheet" type="text/css" href="<?=$sMisc?>css/clndr.css"/> 
+<link rel="stylesheet" type="text/css" href="<?=$sMisc?>css/jquery-ui.min.css"/>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="<?=$sMisc?>js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="<?=$sMisc?>js/jquery.confirmon.min.js"></script>
+<script type="text/javascript" src="<?=$sMisc?>js/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="<?=$sMisc?>js/imagesloaded.pkgd.min.js"></script>
+<script type="text/javascript" src="<?=$sMisc?>js/jquery.magnific-popup.min.js"></script>
+<script type="text/javascript" src="<?=$sMisc?>js/velocity.js"></script>
+<script type="text/javascript" src="<?=$sMisc?>js/jquery.maskedinput.min.js"></script>
+    
+<script type="text/javascript" src="<?=$sMisc?>js/moment.min.js"></script>
+<script type="text/javascript" src="<?=$sMisc?>js/underscore-min.js"></script>
+
+<script type="text/javascript" src="<?=$sMisc?>js/jquery.ui.datepicker-ru.js"></script>
+<script type="text/javascript" src="<?=$sMisc?>js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?=$sMisc?>js/js.cookie.js"></script>
+<script type="text/javascript" src="<?=$sMisc?>js/app_iframe.js"></script>
+
+<div class='iframe'>
+<div style='padding:20px'>
+<span class='close confirm' id='close_iframe' title='Закрыть'>x</span>
+<div class='cart_content' id='cart_content'>
+<?if($iCartCount){?>
+<a href='/cart/'>В корзине</a> <?= $iCartCount; ?> <?= plural_form($iCartCount, 'товар', 'товара', 'товаров'); ?>
+<br>на сумму <?=$netshop->cart->get_totals()?> руб.<br>
+<a href='/order/' class='cart_content_order'>Оформить заказ</a>
+<?}else{?>
+Ваша корзина пуста
+<?}?>
+</div>
+
+<?if(0 && $sub != 140){?>
+<?=nc_browse_sub(140,$aNav)?>
+<br>
+<?}?>
+<nav>
+<?if($sub != 140 && $sub != 149){?>
+<a href="" onclick='history.back();return false;'>&larr;</a>
+<?}?>
+<?if(!isset($_COOKIE['laying'])){?>
+<a href='/care/'>Услуги</a>
+<?}?>
+<a href='/catalog/'>Товары для возложения</a>
+</nav>
+<br>

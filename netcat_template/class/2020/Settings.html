@@ -1,0 +1,47 @@
+<?php
+$query_where = "1 = 1";
+if($q){
+    $query_where .= " AND a.Name LIKE '%".$db->escape($q)."%'";
+}
+if($dt){
+    list($iY,$iM,$iD) = explode('-',$dt);
+    if((int)$iM > 12) $iM = '';
+    if((int)$iD > 31) $iD = '';
+    if(!$iM){
+        $iMS = 1;
+        $iME = 12;
+    }else{
+        $iMS = $iME = $iM;
+    }
+    if(!$iD){
+        $iDS = 1;
+        $iDE = 31;
+    }else{
+        $iDS = $iDE = $iD;
+    }
+    if( (int)$iD || (int)$iM ){
+      $query_where .= " AND (
+          ( MONTH(DOB) = ".(int)$iM." ".($iD?" AND DAY(DOB) = ".(int)$iD:NULL)." )
+          OR
+          ( MONTH(DOD) = ".(int)$iM." ".($iD?" AND DAY(DOD) = ".(int)$iD:NULL)." )
+          
+      )";
+    } else if( (int)$iY ){
+       $query_where .= " AND (
+          ( DOB >= '".(int)$iY."-01-01 00:00:00' AND DOB <= '".(int)$iY."-12-31 23:59:59')
+          OR
+          ( DOD >= '".(int)$iY."-01-01 00:00:00' AND DOD <= '".(int)$iY."-12-31 23:59:59')
+          
+      )";   
+    }
+}
+
+if($cemetery){
+    $sCemetery = $db->get_var("SELECT Burial_Name FROM Classificator_Burial WHERE Burial_ID = ".(int)$cemetery);
+    $query_where .= " AND a.Burial = ".(int)$cemetery;
+}
+if($profession){
+    $sProfession = $db->get_var("SELECT Professions_Name FROM Classificator_Professions WHERE Professions_ID = ".(int)$profession);
+    $query_where .= " AND a.Profession LIKE '%,".(int)$profession.",%'";
+}
+?>

@@ -1,0 +1,45 @@
+<?
+global $HTTP_HOST;
+// Создание списка полей
+$aFields = $nc_core->db->get_results("SELECT Field_Name FROM Field WHERE Class_ID=".(int)$classID, ARRAY_A );
+$aCols = array('[ROW_ID]');
+$aField = array($message);
+foreach($aFields as $c){
+    array_push($aCols, "[".strtoupper($c[Field_Name])."]");
+    $aField[] = ${'f_'.$c[Field_Name]};
+}
+
+// Подмена полей в сообщении
+$sMessage = str_replace($aCols,$aField,$cc_settings['Message']);
+// Подмена полей в теме письма
+$sSubject = str_replace($aCols,$aField,$cc_settings['Subject']);
+
+// Подготовка к отправке
+$oMailer = new CMIMEMail();
+$oMailer->mailbody(strip_tags($sMessage),$sMessage);
+
+// Проверка почтового ящика пользователя
+if(nc_check_email($f_Email)) $sEmail = $f_Email;
+else $sEmail = $system_env['SpamFromEmail'];
+
+// Отправка
+$oMailer->send(
+    ($cc_settings['EmailTo'] ? $cc_settings['EmailTo'] : $system_env['SpamFromEmail']),
+    'noreply@mpamiat.ru',
+    $sEmail,
+    ($cc_settings['Subject'] ? $sSubject : $current_catalogue['Catalogue_Name']." - ".$current_cc['Sub_Class_Name']),
+    'Сайт mpamiat.ru'
+);
+
+
+if($inside_admin) {
+    ob_end_clean();
+    header('Location: '.$goBackLink.'&inside_admin=1');
+    exit;
+} else { 
+#	echo ($IsChecked ? NETCAT_MODERATION_MSG_OBJADD : NETCAT_MODERATION_MSG_OBJADDMOD);
+#	echo "<br /><br />".$goBack;
+#    echo 'ok';
+    echo str_replace($aCols,$aField,$cc_settings['Success']);
+}
+?>

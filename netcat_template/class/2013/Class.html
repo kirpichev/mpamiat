@@ -1,0 +1,30 @@
+<!-- FormPrefix --><? echo $f_AdminCommon; ?>
+
+<div class='user-profile'>
+<? if($current_user['Img']){ ?>
+<div class='photo'><img src="<?=$current_user['Img']?>"></div>
+<?}?>
+<ul<?=(!$current_user['Img']?" style='margin:0'":NULL)?>>
+<li><span class='param'>ФИО:</span> <?=$current_user['Name']?></li>
+<li><span class='param'>Эл. почта:</span> <?=$current_user['Email']?></li>
+<li><span class='param'>Телефон:</span> <?=$current_user['Phone']?></li>
+<li><span class='param'>Тип пользователя:</span> <?=$current_user['Type']?></li>
+</ul>
+<div style='clear:both;padding-top:5px;'>
+<a href="/lichnyy-kabinet/izmenit-profil/" class='button' style='text-decoration:none;color:#333333'>Редактировать профиль</a>
+&nbsp;&nbsp;&nbsp;
+<a href="/netcat/modules/auth/password_change.php" class='button' style='text-decoration:none;color:#333333'>Изменить пароль</a>
+</div>
+</div>
+<hr>
+<h2>Мои пакеты</h2>
+<?=nc_objects_list(96,6,"nohr=1")?>
+
+<hr>
+<h2>Мои заказы</h2>
+<?=nc_objects_list(97,9,"recNum=5&hideStatus=1")?>
+<!-- /FormPrefix -->
+
+<!-- RecordTemplate --><? echo $f_AdminButtons; ?><!-- /RecordTemplate -->
+
+<!-- FormSuffix --><!-- /FormSuffix -->

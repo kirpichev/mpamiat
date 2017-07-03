@@ -1,0 +1,75 @@
+<!-- FormPrefix --><?= $f_AdminCommon ?>
+<? if($current_user['User_ID']){ ?>
+
+<h1>Услуги по уходу за захоронением</h1>
+<ul class="care_services cf">
+
+<? }else{ ?>
+<p>
+Для оформления заказа необходимо авторизоваться.<br>
+Если вы еще не зарегистрированы на сайте, то можете <a href='/register/' target="_parent">зарегистрироваться прямо сейчас</a>.<br>
+Это займет совсем немного времени.</p>
+<hr>
+
+    <form method="post" action="/netcat/modules/auth/">
+        <input type='hidden' name='AuthPhase' value='1' />
+        <input type='hidden' name='REQUESTED_FROM' value='<?= 0 && $REQUESTED_FROM ? htmlspecialchars($REQUESTED_FROM, ENT_QUOTES) : (strpos($_SERVER['REQUEST_URI'], 'netcat/modules/auth') !== false ? str_replace('http://', '', str_replace($_SERVER['HTTP_HOST'], '', $_SERVER['HTTP_REFERER'])) : $_SERVER['REQUEST_URI']) ?>' />
+        <input type='hidden' name='REQUESTED_BY' value='GET' />
+        <input type='hidden' name='catalogue' value='<?= $catalogue ?>' />
+        <input type='hidden' name='template' value='6' />
+        <input type='hidden' name='sub' value='<?= $sub ?>' />
+        <input type='hidden' name='cc' value='<?= $cc ?>' />
+        <div class="block" style="margin: 0px">
+            <label>Эл. почта</label>
+            <div class="input_text"><input type="text" name="AUTH_USER" value='<?= htmlspecialchars($AUTH_USER, ENT_QUOTES) ?>'><div class="left"></div><div class="right"></div></div>
+        </div><br/>
+        <div class="block" style="margin: 0px">
+            <label><?= NETCAT_MODULE_AUTH_PASSWORD ?></label>
+            <div class="input_text"><input type="password" name="AUTH_PW" value=""><div class="left"></div><div class="right"></div></div>
+        </div><br/>
+        <? if ($ADMIN_AUTHTYPE == "manual" && $AUTHORIZATION_TYPE == "cookie") : ?>
+        <div class="block" style="margin: 0px">
+            <label><?= NETCAT_MODULE_AUTH_SAVE ?></label>
+            <input type='checkbox' name='loginsave' />
+        </div><br/>
+        <? endif; ?>
+        <input type="hidden" value="1" name="AuthPhase">
+        <p><button type='submit' class='login_submit'  name='submit' style='font-size:18px' >Войти</button></p>
+        <? if ($AuthPhase && $REQUEST_URI != $REQUESTED_FROM) : ?><br/><br/><a href='<?= $REQUESTED_FROM ?>'><?= NETCAT_MODULE_AUTH_BUT_BACK ?></a><? endif; ?>
+        <br><p><a id="rem_pwd" href="/netcat/modules/auth/password_recovery.php" target="_parent">Забыли пароль?</a></p>
+    </form>
+
+
+<?}?>
+
+<!-- /FormPrefix -->
+
+<!-- RecordTemplate --><?php
+
+    $item = new nc_netshop_item($res[$f_RowNum]);
+    echo $f_AdminButtons;
+
+?>
+<li class='cf<?=(in_array($item['RowID'],$aCartItems)?" in_cart":NULL)?>'>
+    <div class='care_services_left'>
+        <div class='care_services_name'><?=$item['Name']?></div>
+        <div class='care_services_desc'><?=$item['Description']?></div>
+    </div>
+    <div class='care_services_right'>
+        <div class='care_services_price'><nobr><?= number_format( ($item['PriceType_id']==1 ? (int)$aBurial['Square']*$item['ItemPrice'] : $item['ItemPrice'] ),0, ',', ' ') ?></nobr>&nbsp;руб.</div>
+         <form action="<?= nc_modules("netshop")->get_add_to_cart_url() ?>" method="post">
+             <input type="hidden" name="redirect_url" value="<?= nc_message_link($item['Message_ID'], $item['Class_ID']) ?>"/>
+             <input type="hidden" name="cart_mode" value="add"/>
+             
+             <input type="hidden" name="cart<?= $item["RowID"] ?>" value="<?=((int)$aBurial['Square'] && $item['PriceType_id']==1?(int)$aBurial['Square']:"1")?>"/>
+             <button type='button' data-class='<?= $item['Class_ID'] ?>' data-id='<?= $item['Message_ID'] ?>' data-alt='<?=(in_array($item['RowID'],$aCartItems)?"В корзину":"Уже в корзине")?>' class='to_cart_toggler'><?=(in_array($item['RowID'],$aCartItems)?"Уже в корзине":"В корзину")?></button>
+         </form>
+    </div>
+    
+    
+</li><!-- /RecordTemplate -->
+
+<!-- FormSuffix --><? if($current_user['User_ID']){ ?>
+</ul>
+<? if ($totRows > $f_RowNum && !$nc_title) { ?><div class='pages'>Страницы: <?= browse_messages($cc_env, 10) ?></div><? } ?>
+<?}?><!-- /FormSuffix -->

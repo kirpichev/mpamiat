@@ -1,0 +1,470 @@
+.tomb,
+.tomb_4{
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+.tomb li{
+	width:50%;
+	float:left;
+    margin-bottom:20px;
+}
+
+.tomb li:nth-child(2n+3){
+	clear:left;
+}
+
+.tomb_li_inner{
+	margin-right:20px;
+}
+.tomb .photo{
+	line-height:1px;
+	float:left;
+	position:relative;
+    overflow:hidden;
+}
+.tomb .photo{
+	width:40%;
+}
+.tomb .photo img{
+	width:100%;
+}
+.tomb .photo:after{
+//выключена полоса	content:'';
+	display:block;
+	width:100px;
+	height:20px;
+	background:#000;
+	position:absolute;
+	right:-25px;
+	bottom:10px;
+    -moz-transform: rotate(-45deg); 
+    -ms-transform: rotate(-45deg); 
+    -webkit-transform: rotate(-45deg); 
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+	border:3px solid #999999;
+}
+.tomb .name,
+.tomb .dt,
+.tomb .cemetery{
+	margin-left:42%;
+}
+.tomb .dt{
+	font-size:12px;
+}
+
+.tomb .cemetery{
+	font-size:12px;
+}
+
+.tomb_4 li{
+	width:25%;	
+	float:left;
+    margin-bottom:20px;
+}
+.tomb_4 li:nth-child(4n+1){
+	clear:left !important;
+}
+.tomb_4 .photo{
+	line-height:1px;
+	float:left;
+	position:relative;
+    overflow:hidden;
+}
+.tomb_4 .photo{
+	width:40%;
+}
+.tomb_4 .photo img{
+	width:100%;
+}
+.tomb_4 .photo:after{
+//выключена полоса		content:'';
+	display:block;
+	width:100px;
+	height:10px;
+	background:#000;
+	position:absolute;
+	right:-40px;
+	bottom:10px;
+    -moz-transform: rotate(-45deg); 
+    -ms-transform: rotate(-45deg); 
+    -webkit-transform: rotate(-45deg); 
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+	border:3px solid #999999;
+}
+.tomb_4 .name,
+.tomb_4 .dt,
+.tomb_4 .cemetery{
+	margin-left:45%;
+	font-size:13px;
+	line-height:15px;
+	margin-bottom:5px;
+}
+.tomb_4 .dt{
+	font-size:12px;
+}
+
+.tomb_4 .cemetery{
+	font-size:12px;
+}
+
+@media screen and (max-width: 800px) {
+	.tomb li
+	{
+		width:100%;
+	}
+	.tomb_4 li
+	{
+		width:50%;
+	}
+	.tomb_4 li:nth-child(2n+3){
+		clear:left;
+	}
+}
+
+.tomb_left{
+	width:30%;
+	float:left;
+}
+.tomb_full_photo{
+	width:100%;
+	margin-bottom:20px;
+	position:relative;
+	overflow:hidden;
+	line-height:1px;
+}
+.tomb_full_photo img{
+	width:100%
+}
+.tomb_full_photo:after{
+//выключена полоса на фото	content:'';
+	display:block;
+	width:200px;
+	height:20px;
+	background:#000;
+	position:absolute;
+	right:-50px;
+	bottom:20px;
+    -moz-transform: rotate(-45deg); 
+    -ms-transform: rotate(-45deg); 
+    -webkit-transform: rotate(-45deg); 
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+	border:3px solid #999999;
+}
+.tomb_place_photo{
+	width:100%;
+}
+.tomb_place_photo img{
+	width:100%
+}
+.tomb_full_name,
+.tomb_full_dt,
+.tomb_full_bio,
+.tomb_place{
+    margin:0 0 0 32%;
+}
+
+.tomb_full_name{
+	margin-top:0;
+    padding-top:0
+}
+.tomb_full_dt{
+	margin-bottom:10px;
+}
+
+.tomb_sertives{
+	margin:20px 0 20px 32%;
+	background:#eeeeee;
+	padding:20px;
+}
+.tomb_sertives h2{
+	padding:0;
+	margin-bottom:10px;
+}
+.tomb_sertives label{
+	display:block;
+	margin-bottom:10px;
+}
+.tomb_sertives label .note{
+	display:block;
+	padding-top:3px;
+	color:#666;
+	font-size:12px;
+	padding-left:14px;
+}
+.tomb_sertives button{
+	font-size:20px;
+	font-style:normal;
+}
+.tomb_search{
+	margin-bottom:20px;
+}
+.tomb_search input{
+	font-size:20px;
+	padding:10px;
+	width:100%;
+	float:left;
+}
+.tomb_search button{
+	height:40px;
+	width:40px;
+	padding:5px;
+	float:left;
+	margin-left:-43px;
+	margin-top:3px
+}
+.tomb_search button img{
+	width:100%;
+}
+.tomb_search .presets{
+	padding:10px 0;
+}
+.tomb_search .presets ul{
+	list-style:none;
+}
+.tomb_search .presets ul li{
+	width:30%;
+	margin-right:3%;
+	float:left;
+	margin-bottom:10px;
+}
+.tomb_search .presets ul li:nth-child(3n+4){
+	clear:left;
+}
+
+.tomb_search  .presets_items_trigger{
+	float:left;
+	padding:5px 10px;
+	margin-right:10px;
+}
+.tomb_search  .presets_items_trigger.active{
+	background:#efefef;
+}
+.tomb_search  .presets_items_trigger a{
+	text-decoration:none;
+	border-bottom:1px dotted #0075ba;
+	outline:none;
+}
+.tomb_search  .presets_items_trigger a:hover,
+.tomb_search  .presets_items_trigger a:active{
+	border-color:#083649;
+}
+.tomb_search .presets_ites_container{
+	display:none;
+	padding:10px;
+	background:#efefef;
+	
+}
+
+
+.tomb_search select{
+	padding:5px;
+}
+.tomb_search .advanced{
+	padding-top:10px;
+}
+.tomb_search .col_2{
+	padding-left:10px;
+}
+.off{
+	display:none;
+}
+.ok{
+	background:#ccffcc;
+	padding:10px;
+	margin-bottom:20px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+}
+.error{
+	background:#ffcccc;
+	padding:10px;
+	margin-bottom:20px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+}
+.error ul{
+	margin-left:20px;
+}
+.field.error{
+	padding:0;
+	margin:0;
+	border:none;
+	background:none;
+	-moz-border-radius:0;
+	-webkit-border-radius:0;
+	border-radius:0;
+}
+.form .error input[type="text"],
+.form .error input[type="file"],
+.form .error input[type="password"],
+.form .error select{
+	border-color:#ff3333;
+}
+.form{
+	float:left;
+}
+.form .field{
+	clear:both;
+	text-align:right;
+	line-height:25px;
+	margin-bottom:20px;
+}
+.form  label {
+	float:left;
+	padding-right:10px;
+}
+.form .btn{
+	border-top:1px solid #cccccc;
+	padding-top:20px;
+}
+.form.reg{
+	width:100%;
+	max-width:500px;
+}
+.form.reg input[type="text"],
+.form.reg input[type="file"],
+.form.reg input[type="password"],
+.form.reg select{
+	width:65%;
+}
+.form.reg button{
+	padding:15px;
+	font-size:18px;
+}
+.form.reg .captcha button{
+	padding:10px;
+	font-size:12px;
+}
+
+.form  label.subscribe{
+	padding:0;
+	margin-left:175px;
+}
+
+.my-orders td{
+	vertical-align:top;
+}
+.my-orders table{
+	margin-bottom:5px;
+}
+.my-orders table td,
+.my-orders table tr{
+	border:none;
+}
+.my-orders table th{
+	font-weight:bold;
+	background:transparent;
+}
+.my-orders .show-order-contents{
+	font-size:12px;
+	text-decoration:none;
+	border-bottom:1px dotted #0075ba;
+}
+.my-orders .show-order-contents:hover,
+.my-orders .show-order-contents:active{
+	border-color:#083649;
+}
+.user-profile .photo{
+	width:140px;
+	float:left;
+}
+.user-profile ul{
+	list-style:none;
+	padding:0;
+	margin:0 0 0 140px;
+}
+.user-profile ul li .param{
+	color:#999999;
+}
+.item_img .gal div{
+	float:left;
+	height:100px;
+	margin-right:2px;
+}
+.item_img .gal div img{
+	height:100%;
+}
+
+.kin-confirm{
+	width:100%;
+}
+.kin-confirm td{
+	vertical-align:top;
+	padding:10px;
+}
+.kin-confirm td.field_name{
+	width:200px !important;
+
+}
+
+.care_services{
+	list-style:none;
+	margin:0;
+	padding:0:
+}
+.care_services li{
+	padding:10px;
+	border-radius:8px;
+	background:#efefef;
+	font-size:12px;
+	width:40%;
+	margin-right:20px;
+	margin-bottom:20px;
+	height:80px;
+	float:left;
+}
+.care_services li.in_cart{
+	background:#e0e0e0;
+}
+.care_services li.in_cart button{
+	color:#fff;
+	background: #083649;
+}
+.care_services_name{
+	font-size:16px;
+	margin-bottom:5px;
+}
+.care_services_desc{
+	color:#999;
+}
+.care_services_price{
+	font-size:20px;
+	margin-bottom:10px;
+}
+.care_services_left{
+	width:70%;
+	float:left;
+}
+.care_services_right{
+	width:30%;
+	float:left;
+	text-align:right;
+}
+
+.goods_alert{
+	margin:5px 0;
+	padding:5px 5px 5px 71px;
+	border:3px solid #ee9f22;
+	background:url('../i/icon_alert.png') -10px 50% no-repeat;
+}
+
+.cf {
+    *zoom: expression(this.runtimeStyle.zoom="1", this.appendChild(document.createElement("br")).style.cssText="clear:both;font:0/0 serif");
+    *zoom: 1;
+}
+
+.cf:before,
+.cf:after {
+    content: "";
+    display: table;
+}
+
+.cf:after {
+    clear: both;
+}

@@ -1,0 +1,21 @@
+<?/* Служебная часть */for ($f_RowNum = 0; $f_RowNum < $rowCount; $f_RowNum++) {    if($fetch_row[$f_RowNum] instanceof Iterator) {        extract($fetch_row[$f_RowNum]->to_array(), EXTR_PREFIX_ALL, "f");    } else {        extract($fetch_row[$f_RowNum], EXTR_PREFIX_ALL, "f");    }    foreach($iteration_RecordTemplate[$f_RowNum] as $value) {        extract($value);    }    eval($cc_env["convert2txt"]);    ob_start();/* Конец служебной части */?>
+<li class='cf'><div class='tomb_li_inner'>
+<? echo $f_AdminButtons; ?>
+<div class="photo"><a href='<?=$fullLink?>'><img  style="-webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); -ms-filter: grayscale(100%); -o-filter: grayscale(100%); filter: grayscale(100%); filter: gray;" src="<?=RESIZER($f_Photo,150,150,1)?>" alt="<?=$f_Name?>"></a></div>
+<div class="name"><a href='<?=$fullLink?>'><?=$f_Name?></a></div>
+<div class="dt">
+<?if($f_DOB){?>
+    <?=($f_DOB_year == $iY?"<b>":NULL)?>
+    <?=$f_DOB_day?>.<?=$f_DOB_month?>.<?=$f_DOB_year?>
+    <?=($f_DOB_year == $iY?"</b>":NULL)?>
+<?}?>
+<?if($f_DOB && $f_DOD){?> &mdash; <?}?>
+<?if($f_DOD){?>
+    <?=($f_DOD_year == $iY?"<b>":NULL)?>
+    <?=$f_DOD_day?>.<?=$f_DOD_month?>.<?=$f_DOD_year?>
+    <?=($f_DOD_year == $iY?"</b>":NULL)?>
+<?}?>
+</div>
+<div class="cemetery"><?=$f_Burial?></div>
+</div></li>
+<?/* Служебная часть */    echo nc_finishing_RecordTemplate(ob_get_clean(), $inside_admin, $classID, $f_RowID, $parent_message, $cc, $cc_env["Class_Name"], $no_cache_marks);}/* Конец служебной части */?>

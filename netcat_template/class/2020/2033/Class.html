@@ -1,0 +1,32 @@
+<!-- FormPrefix --><? echo $f_AdminCommon; ?>
+
+
+<p style='margin-bottom:20px;padding:5px;background:#eee' class='cf'>
+Памятные даты в ближайшие 7 дней <b>
+
+</b>
+
+<ul class='tomb_4 cf'><!-- /FormPrefix -->
+
+<!-- RecordTemplate --><li class='cf'><div class='tomb_li_inner'>
+<? echo $f_AdminButtons; ?>
+<div class="photo"><a href='<?=$fullLink?>'><img  style="-webkit-filter: grayscale(100%); -moz-filter: grayscale(100%); -ms-filter: grayscale(100%); -o-filter: grayscale(100%); filter: grayscale(100%); filter: gray;" src="<?=RESIZER($f_Photo,150,150,1)?>" alt="<?=$f_Name?>"></a></div>
+<div class="name"><a href='<?=$fullLink?>'><?=$f_Name?></a></div>
+<div class="dt">
+<?if($f_DOB){?>
+    <?=($f_DOB_year == $iY?"<b>":NULL)?>
+    <?=$f_DOB_day?>.<?=$f_DOB_month?>.<?=$f_DOB_year?>
+    <?=($f_DOB_year == $iY?"</b>":NULL)?>
+<?}?>
+<?if($f_DOB && $f_DOD){?> &mdash; <?}?>
+<?if($f_DOD){?>
+    <?=($f_DOD_year == $iY?"<b>":NULL)?>
+    <?=$f_DOD_day?>.<?=$f_DOD_month?>.<?=$f_DOD_year?>
+    <?=($f_DOD_year == $iY?"</b>":NULL)?>
+<?}?>
+</div>
+<div class="cemetery"><?=$f_Burial?></div>
+</div></li><!-- /RecordTemplate -->
+
+<!-- FormSuffix --></ul>
+<!-- /FormSuffix -->

@@ -1,0 +1,107 @@
+<section>
+<?
+$item = new nc_netshop_item($resMsg);
+nc_netshop::get_instance()->goodslist_recent->add($f_RowID, $classID);
+echo $f_AdminButtons;
+echo nc_netshop_item_variant_admin_table($item);
+?>
+                <div class="item_img" style='width:300px;text-align:left'>
+                <?if($item['Image']){?>
+                    <a href="<?=$item['Image']?>" target="_blank" class='image-link'><img src="<?=$item['Image']?>" style='max-width:200px'></a>
+                <?}?>
+                
+                <?=$item['Photos']?>
+                
+                </div>
+                <div class="item_attr">
+                    <?if(1 || $current_user['User_ID']){?>
+                    <h5>Цена: <?= number_format($item['ItemPrice'], 0, ',', ' ') ?>&nbsp;руб.</h5>
+                    <p class="petit"><?=($item['StockUnits'] !== '0'?"есть в наличии":"нет в наличии")?></p>
+                    <?}?>
+<?
+    $selectors = new nc_netshop_item_variant_selector($item, array('Color', 'Size'));
+    echo $selectors->init(array(
+        'replace_location' => true,
+        'updated_regions' => '.variable-part',
+        'on_update' => ''
+    ));
+?>  
+<script>
+$(function(){
+$('#size-selector, #color-selector').on('change',function(){showButton()})
+});
+function showButton(){
+size = $('#size-selector option:selected');
+color = $('#color-selector option:selected');
+if(size.val() != '' && color.val() != ''){
+    $('#button-container').css('visibility','visible');
+}else{
+    $('#button-container').css('visibility','hidden');
+}
+}
+</script>
+                <form  class='variable-part' action="<?= nc_modules("netshop")->get_add_to_cart_url() ?>" method="post">
+                <input type="hidden" name="redirect_url" value="<?= nc_message_link($item['Message_ID'], $item['Class_ID']) ?>"/>
+                <input type="hidden" name="cart_mode" value="add"/>
+                <input type="hidden" name="items[]" value="<?= $item['Class_ID']; ?>:<?= $item['Message_ID']; ?>"/>
+                <?
+                        $sSizes = $selectors->by_template('Size', array(
+                            'prefix' => "<select id='size-selector'>\n",
+                            'first' => "<option value=''>---размер---</option>",
+                            'active' => "<option value='%URL'>%NAME</option>",
+                            'active_link' => "<option value='%URL' selected>%NAME</option>",
+                            'unactive' => "<option value='%URL'>%NAME</option>",
+                            'suffix' => "</select>\n",
+                            'divider' => "\n",
+                 ));
+                 if($sSizes) echo "Размер: ".$sSizes." см. <br>";
+                 ?>        
+                 
+                <?
+                        $sColors = $selectors->by_template('Color', array(
+                            'prefix' => "<select id='color-selector'>\n",
+                            'first' => "<option value=''>---цвет---</option>",
+                            'active' => "<option value='%URL'>%NAME</option>",
+                            'active_link' => "<option value='%URL' selected>%NAME</option>",
+                            'unactive' => "<option value='%URL'>%NAME</option>",
+                            'suffix' => "</select>\n",
+                            'divider' => "\n",
+                 ));
+                 if($sColors) echo "Цвет: ".$sColors."<br><br>";
+                 ?>                
+<div id='button-container'>
+<?if($f_Checked && ($current_user['User_ID'] || 1)){?>
+                    <label>Кол-во для заказа</label>
+                    <input type="number" name="qty" min="0" placeholder="1">
+                    <button type='submit'>В корзину</button>
+<?}?>
+</div>
+                 
+</form>
+                </div>
+
+</section>
+<?if($f_Details){?>
+<h5>Описание</h5>
+<?=$f_Details?>
+<?}?>
+<br><br>
+<div class="topack variable-part" <?=(!$f_Checked ||  !$current_user['User_ID']?"style='display:none'":NULL)?>>
+<?if($f_Checked && $current_user['User_ID']){?>
+<form class='ajax' method='post' action='/netcat/add.php'>
+<p>Добавить эту позицию каталога к моему пакету:</p>
+<input name='catalogue' type='hidden' value='<?= $catalogue ?>' />
+<input name='cc' type='hidden' value='7' />
+<input name='sub' type='hidden' value='96' />
+<input name='posting' type='hidden' value='1' />
+<input name='f_ClassID' type='hidden' value='<?=$classID?>'>
+<input name='f_GoodsID' type='hidden' value='<?=$f_RowID?>'>
+<?=nc_objects_list(96,6,'nc_ctpl=2005')?><br>
+Количество: <input type='number' name='f_Qty' value='1'>
+&nbsp;&nbsp;&nbsp;
+Наценка: <input type='text' name='f_Surcharge' value='' style='width:50px'><br>
+<button type='submit'>Добавить</button>
+</form>
+<?}?>
+</div>
+

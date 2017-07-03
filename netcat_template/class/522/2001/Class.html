@@ -1,0 +1,92 @@
+<!-- FormPrefix --><? /* Отображение корзины */ ?>
+
+<?= $cart->get_quantity_notifications() ?>
+
+<? if ($cart->get_item_count()): ?>
+
+    <? $items = $cart->get_items() ?>
+    <? $has_discount_column = $items->get_field_sum('TotalDiscount') ?>
+
+
+   
+    <!-- Хлебные крошки-->
+    <!--div class="cart-breadcrumbs">
+        <div class="cart-breadcrumbs-item">
+            <a href="<?= $nc_core->SUB_FOLDER; ?>/"><?= $nc_core->catalogue->get_current('Catalogue_Name'); ?></a>
+        </div>
+        <div class="cart-breadcrumbs-item"><a href="#" class="tpl-state-current">Корзина</a>
+        </div>
+        <div class="cart-breadcrumbs-item"><a href="#" class="tpl-state-disabled">Адрес доставки</a>
+        </div>
+        <div class="cart-breadcrumbs-item"><a href="#" class="tpl-state-disabled">Варианты доставки</a>
+        </div>
+        <div class="cart-breadcrumbs-item"><a href="#" class="tpl-state-disabled">Варианты оплаты</a>
+        </div>
+        <div class="cart-breadcrumbs-item">
+            <a href="#" class="tpl-state-disabled">Подтверждение</a>
+        </div>
+        <div class="cart-breadcrumbs-item"><a href="#" class="tpl-state-disabled">Оплата</a>
+        </div>
+        <div class="cart-breadcrumbs-item"><a href="#" class="tpl-state-disabled">Заказ оформлен</a>
+        </div>
+    </div-->
+
+    <form class='tpl-form' method='post' action='<?= nc_modules('netshop')->get_add_to_cart_url(); ?>'>
+        <input type="hidden" name="redirect_url" value="<?= $_SERVER["REQUEST_URI"]; ?>"/>
+
+        <table class="cart">
+                <tr>
+                    <th class="w50">Название</th>
+                    <th>Количество</th>
+                    <th>Цена, руб.</th>
+                    <?=($has_discount_column ? "<th align='left'>Учтенная скидка</th>" : "")?>
+                    <th></th>
+                </tr>        
+            <? foreach ($items as $item) {
+                $sGoodsLink = nc_message_link($item['Message_ID'], $item['Class_ID']);
+            ?>
+                <tr>
+                    <td>
+                        <a href="<?= $sGoodsLink ?>" style="text-decoration:none" class="tip" data-url="<?=$sGoodsLink?>?nc_ctpl=2012&isNaked=1">
+                        <span style="text-decoration:underline"><?= $item['Vendor'] ?> <?= $item['Name'] ?></span>
+                        <? if ($item['VariantName']) { ?>
+                        <span class="variant" style="color:#333333;">(<?= $item['VariantName'] ?>)</span>
+                        <? } ?>
+                        </a>
+                    </td>
+                    <td><input type="number" min="0" name="cart<?= $item['RowID'] ?>" value="<?= $item['Qty'] ?>"></td>
+                    <td class="cost"><?= number_format($item['ItemPrice'], 2, ',', ' ') ?></td>
+                    <?=($has_discount_column ? "<td align='left' style='text-align: left;'>$item[TotalDiscountF]</td>" : "")?>
+                    <td><button type="submit" name="cart<?= $item['RowID'] ?>" value="0" onclick="return confirm('Действительно желаете удалить товар из корзины?')" class="delete">X</button></td>
+                </tr>
+            <? } ?>
+                <tr class="total">
+                    <td></td>
+                    <td><b>Итого:</b></td>
+                    <td class="cost"><?= number_format($cart->get_totals(), 2, ',', ' ') ?></td>
+                     <?=($has_discount_column ? "<td></td>" : "")?>
+                    <td></td>
+                </tr>
+                <tr class="buttons">
+                    <td></td>
+                    <td colspan="5" class="tright">
+                        <button type="submit">Пересчитать</button>
+                        <a class="order" href="/zakaz/">Оформить заказ</a>
+                    </td>
+                </tr>            
+            
+            </table>
+        <input type='hidden' name='cart_mode' value=''>
+    </form>
+
+
+    <? /* Корзина пуста */ ?>
+<? else: ?>
+
+    <div class='error'><?= NETCAT_MODULE_NETSHOP_CART_EMPTY ?></div>
+
+<? endif ?><!-- /FormPrefix -->
+
+<!-- RecordTemplate --><!-- /RecordTemplate -->
+
+<!-- FormSuffix --><!-- /FormSuffix -->

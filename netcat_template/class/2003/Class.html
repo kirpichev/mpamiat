@@ -1,0 +1,12 @@
+<!-- FormPrefix --><? echo $f_AdminCommon; ?>
+
+<p><a href="<?=$addLink?>" class='button' style='text-decoration:none;color:#333333;'>+ Добавить пакет предложений</a></p>
+<?=(!$nohr?"<hr>":"<br>")?><!-- /FormPrefix -->
+
+<!-- RecordTemplate --><? echo $f_AdminButtons; ?>
+<h3><a href="<?=$fullLink?>"><?=$f_Name?></a></h3>
+<?if($f_Description){?>
+<p><?=$f_Description?></p>
+<?}?><!-- /RecordTemplate -->
+
+<!-- FormSuffix --><!-- /FormSuffix -->

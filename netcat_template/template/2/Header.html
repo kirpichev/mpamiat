@@ -1,0 +1,156 @@
+<!doctype html>
+
+<!-- hand.made by true.crew | http://www.truecrew.ru | info@truecrew.ru -->
+<!-- © 2014. All rights reserved -->
+
+<!--[if IE ]>    <html lang="en" class="ie"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/base5.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/_css/jquery.confirmon.css"/>
+    <link rel="stylesheet" type="text/css" href="/_css/jquery.qtip.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/_css/magnific-popup.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="cleartype" content="on">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" />
+
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="/_js/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="/_js/jquery.confirmon.min.js"></script>
+    <script type="text/javascript" src="/_js/jquery.qtip.min.js"></script>
+    <script type="text/javascript" src="/_js/imagesloaded.pkgd.min.js"></script>
+    <script type="text/javascript" src="/_js/jquery.magnific-popup.min.js"></script>
+    <script type="text/javascript" src="/velocity.js"></script>
+    <script type="text/javascript" src="/app.js"></script>
+	<title>МАРС — Межрегиональное Агенство Ритуального Сервиса</title>
+</head>
+<body class="index">
+<div class="layout">
+    <section class="row header">
+        <div class="col leftcol">
+            <a class="box logo" title="" href='/'></a>
+        </div>
+        <div class="col slogan">
+            <p>Неизбежное должно<br>быть доступно</p>
+        </div>
+        <div class="col phone">
+            <aside>
+            <p>наш офис в москве:</p>
+            <b>+7 <i>(495)</i> 411-1933</b>
+            </aside>
+        </div>
+        <div class="col rightcol">
+            <aside class="lc<?=(!$current_user['User_ID']?" loff":NULL)?>">
+            <h3>Личный кабинет</h3>
+                <? if(!$current_user['User_ID']){ ?>
+                <form method="post" action="/netcat/modules/auth/" id="auth">
+                   <input type='hidden' name='AuthPhase' value='1' />
+                   <input type='hidden' name='REQUESTED_FROM' value='<?= $REQUESTED_FROM ? htmlspecialchars($REQUESTED_FROM, ENT_QUOTES) : (strpos($_SERVER['REQUEST_URI'], 'netcat/modules/auth') !== false ? str_replace('http://', '', str_replace($_SERVER['HTTP_HOST'], '', $_SERVER['HTTP_REFERER'])) : $_SERVER['REQUEST_URI']) ?>' />
+                   <input type='hidden' name='REQUESTED_BY' value='GET' />
+                   <input type='hidden' name='catalogue' value='<?= $catalogue ?>' />
+                   <input type='hidden' name='sub' value='<?= $sub ?>' />
+                   <input type='hidden' name='cc' value='<?= $cc ?>' />
+                 
+                    <input type="text" name="AUTH_USER" placeholder="эл. почта">
+                    <input type="password" name="AUTH_PW" placeholder="пароль">  
+                    <input type="submit" value="вход">
+                    <small>
+                    <input type="checkbox" id="ck1" name='loginsave'><label for="ck1"> Запомнить</label> | <a href="/netcat/modules/auth/password_recovery.php">Забыли пароль?</a>
+                    <!-- | <a href="#">Регистрация</a> -->
+                    </small>                    
+                    
+                    
+                </form>
+                <?} else {?>
+                    <figure>
+                    <?if($current_user['Img']){?>
+                        <img src='<?=$current_user['Img']?>'>
+                    <?}?>
+                    <figcaption>
+                        <p>Здравствуйте,<br><b><?=$current_user["Name"]?></b><br>
+                        [<a style='font-size:14px' href='/netcat/modules/auth/?logoff=1&REQUESTED_FROM=/&REQUESTED_BY=<?=$REQUEST_METHOD?>'>выход</a>]
+                    </figcaption>
+                    </figure> 
+                <?}?>
+                  <?if($iCartCount > 0){?>
+                    <div class="toOrder"><a href="/korzina/"><?=numFormat($iCartCount,'товар','товара','товаров')?></a><br>на сумму <b><?= number_format($netshop->cart->get_totals(), 0, ',', ' ')?></b>  ₽</p>
+                    <?}?>
+            </aside>
+        </div>
+    </section>
+    <section class="row fx menu">
+        <div class="col leftcol">
+            <ul class="nav">
+                <li class="tab tabone selected">Каталог товаров</li>
+            </ul>
+        </div>
+        <div class="col col2m">
+            <?= nc_browse_level(0, $aNav); ?>
+        </div>
+        <div class="col rightcol">
+ 
+            <ul class="nav">
+ 
+                <?if($iCartCount > 0){?>
+                <li><a href="/zakaz/" class="order">Оформить</a></li>
+                <?}else{?>
+                <li style='color:#ffffff'><a class='order'>Корзина пуста</a></li>
+                <?}?>
+            </ul>
+        </div>
+    </section>
+    <section class="row">
+        <div class="col leftcol">
+            <div class="fx subnav menuone on">
+                <?= nc_browse_sub(7, $aNavCat) ?>
+            </div>
+            <ul class="nav">
+                <li class="tab tabtwo">Каталог услуг</li>
+            </ul>
+            <div class="fx subnav menutwo<?=(strpos($REQUEST_URI,'katalog-uslug/')!==false?" on":NULL)?>"">
+                <?= nc_browse_sub(78, $aNavCat2); ?>
+            </div>
+            <aside>
+                <h2>Какой-то блок</h2>
+                <p>Пример оформления информационного блока. Подходит для размещения любого необходимого  контента.</p>
+                <p class="gray">Роль и важность текста можно варьировать, например делать более вторичным.</p>
+            </aside>
+        </div>
+        <div class="col col2m pagetext<?=($classID==2000 && $message?" fx item":NULL)?>">
+        <? if($sub != 1){ ?>
+        <div class="crumbs">
+        <a href="/">На главную</a> > 
+        <? foreach ($nc_core->nav->get_path(1,-1) as $sub): ?>
+            <? if ($sub->current): ?>
+                <?=$sub->name ?>
+            <? else: ?>
+                <a href='<?=$sub->url ?>'><?=$sub->name ?></a> >
+            <? endif ?>
+        <? endforeach ?>
+        <h1><?=$nc_core->page->get_h1()?></h1>
+        <?if($current_sub['img']){?><img src="<?=$current_sub['img']?>"><?}?>
+        </div>
+        <?}else{?>
+            <? if($_SERVER['REQUEST_URI'] == '/netcat/modules/auth/password_recovery.php'){ ?>
+            <div class="crumbs">
+            <a href="/">На главную</a> >
+            <h1>Восстановление пароля</h1>
+            </div>
+            <?}?>
+            <? if($_SERVER['REQUEST_URI'] == '/netcat/modules/auth/'){ ?>
+            <div class="crumbs">
+            <a href="/">На главную</a> >
+            <h1>Авторизация</h1>
+            </div>
+            <?}?>
+        <?}?>

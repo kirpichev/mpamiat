@@ -1,0 +1,79 @@
+<?php
+
+$order->set_id($msgID);
+$order->offsetUnset('SignUp');
+$email = $order['Email'];
+
+$netshop->place_order($order);
+
+$payment_method = new nc_netshop_payment_method($order['PaymentMethod']);
+$payment_system_id = $payment_method['handler_id'];
+
+$invoice = null;
+
+if ($payment_system_id) {
+    $invoice = new nc_payment_invoice(array(
+        "payment_system_id" => $payment_system_id,
+        "amount" => $order->get_totals(),
+        "description" => "Оплата заказа $msgID",
+        "currency" => "RUR",
+        "customer_id" => $AUTH_USER_ID,
+        "customer_name" => (string)$f_ContactName,
+        "customer_email" => (string)$f_Email,
+        "customer_phone" => (string)$f_Phone,
+        "order_source" => 'netshop',
+        "order_id" => $msgID,
+    ));
+    $invoice->save();
+}
+
+while (ob_end_clean()) ;
+
+
+global $DOCUMENT_ROOT;
+include($DOCUMENT_ROOT."/_pdf/mpdf.php");
+$sFileName = $DOCUMENT_ROOT."/_tmp/ordr_".$message.".pdf";
+$mpdf = new mPDF('utf-8', 'A4', '8', '', 10, 10, 7, 7, 10, 10); /*задаем формат, отступы и.т.д.*/ 
+$html = file_get_contents("http://".$HTTP_HOST."/lichnyy-kabinet/moi-zakazy/zakaz_".$message.".html?isNaked=1&nc_ctpl=2016");
+$stylesheet = file_get_contents("http://".$HTTP_HOST."/_css/pdf.css");
+$mpdf->charset_in = 'utf-8'; /*не забываем про русский*/
+$mpdf->WriteHTML($stylesheet, 1);
+$mpdf->WriteHTML($html, 2); /*формируем pdf*/
+$mpdf->Output($sFileName);
+
+$sMailTo        = "mars-region@yandex.ru";
+$sMailFrom      = "info@mars-region.ru";
+$sMailReply     = "info@mars-region.ru";
+$sMailFromName = "Сайт mars-region.ru";
+$sMailSubject   = "Заказ №".$message.". PDF ";
+$sMailText      = "Данные заказа в формате PDF находятся во вложении";
+$oMailer = new CMIMEMail();
+$oMailer->mailbody( strip_tags($sMailText), $sMailText);
+$oMailer->attachFile($sFileName, "Mars-Region.Ru_Order".$message.".pdf", "application/octet-stream");
+$oMailer->send($sMailTo, $sMailFrom, $sMailFrom, $sMailSubject, $sMailFromName);
+#$oMailer->send('den@kulikoff.net', $sMailFrom, $sMailFrom, $sMailSubject, $sMailFromName);
+
+$sUserMailTo = $order['Email'];
+$sUserMailSubject = "Ваш заказ №".$message." принят";
+$sUserMailText = "<p>Данные заказа в формате PDF находятся во вложении</p>
+<p>=====</p>
+<p><i>Межрегиональное Агенство Ритуального Сервиса (МАРС)</i></p>
+";
+$oUserMailer = new CMIMEMail();
+$oUserMailer->mailbody( strip_tags($sUserMailText), $sUserMailText);
+$oUserMailer->attachFile($sFileName, "Mars-Region.Ru_Order".$message.".pdf", "application/octet-stream");
+$oUserMailer->send($sUserMailTo, $sMailFrom, $sMailFrom, $sUserMailSubject, $sMailFromName);
+
+
+unlink($sFileName);
+
+
+if ($isNaked) {
+    echo 'OK';
+} else {
+    // Переадресация
+    header("Location: /zakaz/ok" . ($invoice ? ("?invoice=" . $invoice->get('id')) : ""));
+}
+
+exit;
+?>

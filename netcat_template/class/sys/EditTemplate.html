@@ -1,0 +1,93 @@
+<? $auth_settings = $nc_core->get_settings('', 'auth')?>
+
+<?=(!$warnText && $save == 'ok' ? "<div class='ok'>Ваш профиль успешно изменен</div>" : NULL ) ?>
+
+<?=($warnText ? "<div class='error'>".$warnText."</div>" : NULL ) ?>
+
+<form name='adminForm' id='adminForm' class='form reg' enctype='multipart/form-data' method='post' action='<?= $nc_core->SUB_FOLDER ?><?= $nc_core->HTTP_ROOT_PATH ?>message.php'>
+  <input name='admin_mode' type='hidden' value='<?= $admin_mode ?>' />
+  <input name='catalogue' type='hidden' value='<?= $catalogue ?>' />
+  <input name='cc' type='hidden' value='<?= $cc ?>' />
+  <input name='message' type='hidden' value='<?= $message ?>' />
+  <input name='sub' type='hidden' value='<?= $sub ?>' />
+  <input name='posting' type='hidden' value='1' />
+  <input name='curPos' type='hidden' value='<?= $curPos ?>' />
+
+<div class="field<?=(in_array('Email',$aErrorFields)?" error":NULL)?>">
+   <label for="f_Login">Эл. почта<sup>*</sup></label>
+   <?= nc_string_field($nc_core->AUTHORIZE_BY, "id='f_Login' disabled style='disable'", $classID, 0, $current_user['Email']) ?>
+</div>
+<div class="field<?=(in_array('Name',$aErrorFields)?" error":NULL)?>">
+   <label for="f_Name">ФИО<sup>*</sup></label>
+   <?= nc_string_field("Name", "id='f_Name'", $classID, 0) ?>
+</div>
+<div class="field<?=(in_array('Phone',$aErrorFields)?" error":NULL)?>">
+   <label for="f_Phone">Телефон<sup>*</sup></label>
+   <?= nc_string_field("Phone", "id='f_Phone'", $classID, 0) ?>
+</div>
+<div class="field">
+   <label for="f_Img">Фото</label>
+   <?= nc_file_field("Img", "id='f_Img'", $classID, 0) ?>
+</div>
+<div class="field<?=(in_array('Type',$aErrorFields)?" error":NULL)?>">
+   <label for="f_Type">Тип пользователя<sup>*</sup></label>
+   <?= nc_list_field("Type", "id='f_Type'", $classID, 0) ?>
+</div>
+<div class="field company<?=($f_Type != 2 ? " off" :NULL).(in_array('CompanyName',$aErrorFields)?" error":NULL)?>">
+   <label for="f_CompanyName">Название компании<sup>*</sup></label>
+   <?= nc_string_field("CompanyName", "id='f_CompanyName'", $classID, 0) ?>
+</div>
+<div class="field company<?=($f_Type != 2 ? " off" :NULL)?>">
+   <label for="f_Fax">Факс</label>
+   <?= nc_string_field("Fax", "id='f_Fax'", $classID, 0) ?>
+</div>
+<div class="field company<?=($f_Type != 2 ? " off" :NULL).(in_array('INN',$aErrorFields)?" error":NULL)?>">
+   <label for="f_INN">INN<sup>*</sup></label>
+   <?= nc_string_field("INN", "id='f_INN'", $classID, 0) ?>
+</div>
+<div class="field company<?=($f_Type != 2 ? " off" :NULL).(in_array('KPP',$aErrorFields)?" error":NULL)?>">
+   <label for="f_KPP">КПП<sup>*</sup></label>
+   <?= nc_string_field("KPP", "id='f_KPP'", $classID, 0) ?>
+</div>
+<div class="field company<?=($f_Type != 2 ? " off" :NULL).(in_array('JurAddress',$aErrorFields)?" error":NULL)?>">
+   <label for="f_AddressDeJure">Юридический адрес<sup>*</sup></label>
+   <?= nc_string_field("AddressDeJure", "id='f_AddressDeJure'", $classID, 0) ?>
+</div>
+<div class="field company<?=($f_Type != 2 ? " off" :NULL)?>">
+   <label for="f_OKPO">Код ОКПО</label>
+   <?= nc_string_field("OKPO", "id='f_OKPO'", $classID, 0) ?>
+</div>
+<div class="field company<?=($f_Type != 2 ? " off" :NULL)?>">
+   <label for="f_SettlementAccount">Расчетный счет</label>
+   <?= nc_string_field("SettlementAccount", "id='f_SettlementAccount'", $classID, 0) ?>
+</div>
+<div class="field company<?=($f_Type != 2 ? " off" :NULL)?>">
+   <label for="f_CorrAccount">Корр. счет</label>
+   <?= nc_string_field("CorrAccount", "id='f_CorrAccount'", $classID, 0) ?>
+</div>
+<div class="field company<?=($f_Type != 2 ? " off" :NULL)?>">
+   <label for="f_BIK">Код ОКОНХ</label>
+   <?= nc_string_field("BIK", "id='f_BIK'", $classID, 0) ?>
+</div>
+<div class="field cf">
+   <label class='subscribe'><?= nc_bool_field("MailSubscribe", "", $classID, 0) ?> Подписаться на рассылку</label>
+</div>
+
+<div class="field btn">
+    <button type='submit'>Сохранить</button>
+</div>
+
+</form>
+
+<script>
+$(function(){
+    $('#f_Type').change(function(){
+        val = $(this).val();
+        if(val == 2){
+            $('.company').removeClass('off');
+        }else{
+            $('.company').addClass('off');
+        }
+    });
+});
+</script>

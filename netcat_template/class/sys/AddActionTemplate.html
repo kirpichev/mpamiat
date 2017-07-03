@@ -1,0 +1,52 @@
+<?
+if($order){
+    SetCookie("order_redirect","true",time()+3600);
+}
+if ($_FILES['f_Img']['size'] != 0 && $_FILES['f_Img']['type'] != '')  {
+	
+    require_once($nc_core->INCLUDE_FOLDER . "classes/nc_imagetransform.class.php");
+	
+    $sPhotoPath = $DOCUMENT_ROOT . nc_file_path('User', $message, 'Img');
+    if ($sPhotoPath) {
+		nc_ImageTransform::imgResize($sPhotoPath, $sPhotoPath, 100, 100);
+	}
+}
+
+echo "<p><b>Регистрация прошла успешно</b></p>";
+
+$settings = $nc_core->get_settings('', 'auth');
+$mailer = new CMIMEMail();
+
+// подтверждение через почту
+if ( $settings['confirm'] ) {
+  $mailinfo = $nc_auth->get_confirm_mail( $message );
+  $mail_body = nc_mail_attachment_attach($mailer, $mailinfo['body'], 'auth_confirm_' . $catalogue);
+  $mailer->mailbody( strip_tags($mail_body), $mailinfo['html'] ?  $mail_body : "");
+  $mailer->send($f_Email, $system_env['SpamFromEmail'], $system_env['SpamFromEmail'], $mailinfo['subject'],  $system_env['SpamFromName']);
+  echo "<p>На ваш почтовый ящик было выслано письмо со ссылкой для подтверждения регистрации.</p>";
+}
+
+// премодерация администратором
+if ( $settings['premoderation'] ) {
+  echo "<p>Ваша учетная запись будет активирована после проверки администратора.</p>";
+}
+
+// подтверждение не нужно
+if ( !$settings['premoderation'] && !$settings['confirm'] ) {
+  // авторизация после регистрации
+  if ( $settings['autoauthorize'] ) {
+    $nc_core->user->authorize_by_id($message);
+    echo "<p>Сейчас Вы будете перемещены на главную страницу.</p>";
+    echo "<meta http-equiv='refresh' content='2;url=http://".$_SERVER['HTTP_HOST']."/' />";
+  }
+}
+
+// оповещение администратора
+if ( $settings['notify_admin'] ) {
+    $mailinfo = $nc_auth->get_notify_admin_mail( $message );
+    $mailer->mailbody( strip_tags($mailinfo['body']), $mailinfo['html'] ? $mailinfo['body'] : "");
+    $mail_body = nc_mail_attachment_attach($mailer, $mailinfo['body'], 'auth_notify_' . $catalogue);
+    $mailer->mailbody( strip_tags($mail_body), $mailinfo['html'] ?  $mail_body : "");
+    $mailer->send($system_env['SpamFromEmail'], $system_env['SpamFromEmail'], $system_env['SpamFromEmail'], $mailinfo['subject'], $system_env['SpamFromName']);;
+}
+?>

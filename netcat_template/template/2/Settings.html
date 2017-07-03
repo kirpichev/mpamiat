@@ -1,0 +1,43 @@
+<?php
+
+$aNav['prefix']      = "<ul class='nav'>";
+$aNav['suffix']      = "</ul>";
+$aNav['active']      = "<li class='on'><a href='%URL'>%NAME</a></li>";
+$aNav['active_link'] = "<li class='on'><a href='%URL'>%NAME</a></li>";
+$aNav['unactive']    = "<li><a href='%URL'>%NAME</a></li>";
+$aNav['divider']     = "";
+
+$aNavCat[0]['prefix']      = "<ul>";
+$aNavCat[0]['suffix']      = "</ul>";
+$aNavCat[0]['active']      = "<li class='on'><img src='%img'><a href='%URL'>%NAME</a>%NEXT_LEVEL</li>";
+$aNavCat[0]['active_link'] = "<li class='on'><img src='%img'><a href='%URL'>%NAME</a>%NEXT_LEVEL</li>";
+$aNavCat[0]['unactive']    = "<li><img src='%img'><a href='%URL'>%NAME</a></li>";
+
+$aNavCat[1]['prefix']      = "<section>";
+$aNavCat[1]['suffix']      = "</section>";
+$aNavCat[1]['active']      = "<a href='%URL' class='on'>%NAME</a>";
+$aNavCat[1]['active_link'] = "<a href='%URL' class='on'>%NAME</a>";
+$aNavCat[1]['unactive']    = "<a href='%URL'>%NAME</a>";
+
+$aNavCat2[0]['prefix']      = "<ul>";
+$aNavCat2[0]['suffix']      = "</ul>";
+$aNavCat2[0]['active']      = "<li class='on'>img src='/i/ico_.png'><a href='%URL'>%NAME</a>%NEXT_LEVEL</li>";
+$aNavCat2[0]['active_link'] = "<li class='on'><img src='/i/ico_.png'><a href='%URL'>%NAME</a>%NEXT_LEVEL</li>";
+$aNavCat2[0]['unactive']    = "<li><img src='/i/ico_.png'><a href='%URL'>%NAME</a></li>";
+
+$aNavCat2[1]['prefix']      = "<section>";
+$aNavCat2[1]['suffix']      = "</section>";
+$aNavCat2[1]['active']      = "<a href='%URL' class='on'>%NAME</a>";
+$aNavCat2[1]['active_link'] = "<a href='%URL' class='on'>%NAME</a>";
+$aNavCat2[1]['unactive']    = "<a href='%URL'>%NAME</a>";
+
+$browse_msg['prefix'] = "<span class='paginator'>";
+$browse_msg['suffix'] = "</span>";
+$browse_msg['unactive'] = "<a class='active' href='%URL'>%PAGE</a>";
+$browse_msg['active'] = "<span>%PAGE</span>";
+$browse_msg['divider'] = "";
+
+$netshop = nc_netshop::get_instance();
+$iCartCount = $netshop->cart->get_item_count();
+
+?>

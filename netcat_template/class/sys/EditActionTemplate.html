@@ -1,0 +1,25 @@
+<?php 
+
+if ($_FILES['f_Img']['size'] != 0 && $_FILES['f_Img']['type'] != '')  {
+	
+    require_once($nc_core->INCLUDE_FOLDER . "classes/nc_imagetransform.class.php");
+	
+    $sPhotoPath = $DOCUMENT_ROOT . nc_file_path('User', $message, 'Img');
+    if ($sPhotoPath) {
+		nc_ImageTransform::imgResize($sPhotoPath, $sPhotoPath, 100, 100);
+	}
+}
+
+echo "";
+if($inside_admin) {
+	ob_end_clean();
+	header("Location: ".$goBackLink."&inside_admin=1");
+	exit;
+}
+else {
+
+	ob_end_clean();
+	header("Location: /lichnyy-kabinet/izmenit-profil/?save=ok");
+	exit;
+}
+echo ""; ?>

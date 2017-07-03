@@ -1,0 +1,10 @@
+<?
+if (!$admin_mode) {
+    $ignore_check = true;
+    $query_where = "(a.`Checked` = 1 OR (a.`Checked` = 0 AND (" .
+        "SELECT `Message_ID` FROM `Message$classID` as `child` " .
+        " WHERE `child`.`Parent_Message_ID` = a.`Message_ID` AND `child`.`Checked` = 1 " .
+        " LIMIT 1" .
+        ")))";
+}
+?>

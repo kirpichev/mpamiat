@@ -1,0 +1,23 @@
+<!-- FormPrefix --><? echo $f_AdminCommon; ?>
+<h3>Ваш заказ оформлен!</h3>
+<p>Подробная информация  придет на почту в течение 5 минут. Также с вами свяжется наш менеджер.</p>
+<p>
+            Пожалуйста, произведите оплату заказа.          
+            <?
+            $invoice = $nc_core->input->fetch_get('invoice');
+            
+            if ($invoice) {
+                $object = new nc_payment_invoice();
+                $object->load($invoice);
+                
+                $payment_method = nc_payment_factory::create($object['payment_system_id']);
+                echo $payment_method->get_request_form($object);
+            }
+            
+            ?>
+</p>
+<!-- /FormPrefix -->
+
+<!-- RecordTemplate --><!-- /RecordTemplate -->
+
+<!-- FormSuffix --><!-- /FormSuffix -->

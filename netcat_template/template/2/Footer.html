@@ -1,0 +1,34 @@
+<?
+if($_SERVER['SCRIPT_NAME'] == '/netcat/modules/auth/confirm.php' && $code){
+    if($_COOKIE['order_redirect']){
+echo "<p>Через 3 секунды вы будете автоматически перенаправлены на <a href='/zakaz/'>оформление заказа</a></p>"; 
+echo "<meta http-equiv='refresh' content='3; url=/zakaz/'>";
+    }
+}
+?>
+        </div>
+        <div class="col rightcol">
+            <?if($current_user['User_ID']){?>
+            <aside class="mypack">
+                <h3><a href="/lichnyy-kabinet/izmenit-profil/">Изменить профиль</a></h3>
+                <p><a href='/netcat/modules/auth/password_change.php'>Изменение пароля</a></p>
+                <br>            
+                <h3><a href="/lichnyy-kabinet/moi-pakety/">Мои пакеты</a></h3>
+                <?=nc_objects_list(96,6,"nc_ctpl=2008")?>
+                <br>
+                <h3><a href="/lichnyy-kabinet/moi-zakazy/">Мои заказы</a></h3>
+            </aside>
+            <?}?>
+            <aside>
+                <p>Эту «вторую», дополнительную, колонку можно использовать для всяческих нужд: для размещения текстовых материалов, блоков с рекламой или любым другим контентом, в общем.</p>
+            </aside>
+        </div>
+    </section>
+    <section class="row copyrights">
+        <div class="col">
+            <p>© 2014. МАРС — Межрегиональное Агенство Ритуального Сервиса</p>
+        </div>
+        <div class="col tright petit"><p><a href="http://www.ofresh.ru" title="Разработка сайта">Разработка сайта</a> <sup>ofresh.ru</sup></p></div>
+    </section>
+</body>
+</html>

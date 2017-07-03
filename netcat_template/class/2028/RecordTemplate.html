@@ -1,0 +1,26 @@
+<?/* Служебная часть */for ($f_RowNum = 0; $f_RowNum < $rowCount; $f_RowNum++) {    if($fetch_row[$f_RowNum] instanceof Iterator) {        extract($fetch_row[$f_RowNum]->to_array(), EXTR_PREFIX_ALL, "f");    } else {        extract($fetch_row[$f_RowNum], EXTR_PREFIX_ALL, "f");    }    foreach($iteration_RecordTemplate[$f_RowNum] as $value) {        extract($value);    }    eval($cc_env["convert2txt"]);    ob_start();/* Конец служебной части */?>
+<?php
+
+    $item = new nc_netshop_item($res[$f_RowNum]);
+    echo $f_AdminButtons;
+
+?>
+<li class='cf<?=(in_array($item['RowID'],$aCartItems)?" in_cart":NULL)?>'>
+    <div class='care_services_left'>
+        <div class='care_services_name'><?=$item['Name']?></div>
+        <div class='care_services_desc'><?=$item['Description']?></div>
+    </div>
+    <div class='care_services_right'>
+        <div class='care_services_price'><nobr><?= number_format( ($item['PriceType_id']==1 ? (int)$aBurial['Square']*$item['ItemPrice'] : $item['ItemPrice'] ),0, ',', ' ') ?></nobr>&nbsp;руб.</div>
+         <form action="<?= nc_modules("netshop")->get_add_to_cart_url() ?>" method="post">
+             <input type="hidden" name="redirect_url" value="<?= nc_message_link($item['Message_ID'], $item['Class_ID']) ?>"/>
+             <input type="hidden" name="cart_mode" value="add"/>
+             
+             <input type="hidden" name="cart<?= $item["RowID"] ?>" value="<?=((int)$aBurial['Square'] && $item['PriceType_id']==1?(int)$aBurial['Square']:"1")?>"/>
+             <button type='button' data-class='<?= $item['Class_ID'] ?>' data-id='<?= $item['Message_ID'] ?>' data-alt='<?=(in_array($item['RowID'],$aCartItems)?"В корзину":"Уже в корзине")?>' class='to_cart_toggler'><?=(in_array($item['RowID'],$aCartItems)?"Уже в корзине":"В корзину")?></button>
+         </form>
+    </div>
+    
+    
+</li>
+<?/* Служебная часть */    echo nc_finishing_RecordTemplate(ob_get_clean(), $inside_admin, $classID, $f_RowID, $parent_message, $cc, $cc_env["Class_Name"], $no_cache_marks);}/* Конец служебной части */?>

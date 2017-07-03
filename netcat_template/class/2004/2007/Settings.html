@@ -1,0 +1,38 @@
+<?
+$aItem = $_POST['item'];
+$aCart = $_POST['cart'];
+$aSrch = $_POST['srch'];
+foreach($aItem AS $iClass=>$aIDs){
+    foreach ($aIDs AS $iGoodsID => $iMessageID){
+        if((int)$aCart[$iClass][$iGoodsID]){
+            $db->query("
+                UPDATE Message".$classID."
+                SET
+                    Qty = ".(int)$aCart[$iClass][$iGoodsID].",
+                    Surcharge = '".$db->escape($aSrch[$iClass][$iGoodsID])."'
+                WHERE 
+                   Message_ID = ".(int)$iMessageID." AND
+                   User_ID = ".(int)$current_user['User_ID']."
+            ");
+        }else{
+            $db->query("
+                DELETE FROM Message".$classID."
+                WHERE
+                   Message_ID = ".(int)$iMessageID." AND
+                   User_ID = ".(int)$current_user['User_ID']."               
+            ");
+        }
+    }
+}
+if($json){
+  $aResult = array(
+      'status'=>'ok',
+      'reload'=>1,
+      'okMessage'=>'Изменения успешно сохранены'
+  );
+  echo json_encode($aResult);
+}else{
+    ob_end_clean();
+    header('Location: '.$_POST['redirect_url']);
+}
+?>

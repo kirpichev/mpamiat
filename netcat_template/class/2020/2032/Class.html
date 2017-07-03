@@ -1,0 +1,43 @@
+<!-- FormPrefix --><form class='tomb_search cf' action='/tombs/' method='get'>
+<div class="cf">
+<input name='q' value='<?=$_GET["q"]?>' placeholder='Введите фамилию для поиска'>
+<button type='submit'><img src='<?=$nc_parent_template_folder_path?>i/search-glass.png'></button>
+</div>
+
+
+<div class="presets cf">
+<div class="cf">
+<div class="presets_items_trigger"><a href="" data-container="#cemetery">Кладбища</a></div>
+<div class="presets_items_trigger"><a href="" data-container="#profession">Род деятельности</a></div>
+</div>
+
+
+<div class="presets_ites_container" id="cemetery">
+<ul class="cf">
+<?
+    $aCemetery = $nc_core->db->get_results("SELECT Burial_ID AS ID, Burial_Name AS Name FROM Classificator_Burial ORDER BY Name",ARRAY_A);
+    foreach($aCemetery AS $aC){
+?>
+    <li><a href="tombs/?cemetery=<?=$aC['ID']?>"><?=$aC['Name']?></a></li>
+<?}?>
+</ul>
+</div>
+
+<div class="presets_ites_container" id="profession">
+<ul class="cf">
+<?
+    $aProfessions = $nc_core->db->get_results("SELECT Professions_ID AS ID, Professions_Name AS Name FROM Classificator_Professions ORDER BY Name",ARRAY_A);
+    foreach($aProfessions AS $aP){
+?>
+    <li><a href="tombs/?profession=<?=$aP['ID']?>"><?=$aP['Name']?></a></li>
+<?}?>
+</ul>
+</div>
+</div>
+
+</form>
+<!-- /FormPrefix -->
+
+<!-- RecordTemplate --><!-- /RecordTemplate -->
+
+<!-- FormSuffix --><!-- /FormSuffix -->

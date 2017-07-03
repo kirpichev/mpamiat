@@ -1,0 +1,18 @@
+<div style='float:right;margin-top:-53px;position:relative;z-index:20'>
+<? if($edit){ ?>
+<a href="<?=$fullLink?>" class='button' style='text-decoration:none;color:#333333;'>Просмотр</a>
+&nbsp;&nbsp;&nbsp;
+<a href="<?=$editLink?>" class='button' style='text-decoration:none;color:#333333;'>Редактировать</a>
+&nbsp;&nbsp;&nbsp;
+<a href="<?=$dropLink?>" class='button drop' style='text-decoration:none;color:#ff3333;background:#ffcccc'>Удалить пакет</a>
+<? }else{ ?>
+<a href="<?=$fullLink?>?edit=1" style='text-decoration:none;color:#333333;'><img src="/i/ico_edit.png" alt='' width="16" height="16"></a>
+<? } ?>
+</div>
+
+<?if($f_Description){?>
+<p><?=$f_Description?></p><hr>
+<?}?>
+<?=nc_objects_list(96,7,'nc_ctpl='.($edit?"2006":"2011").'&pack='.$f_RowID.'&redirect_url='.$fullLink.'&drop='.$dropLink.'&edit='.$editLink)?>
+<hr>
+<p><a href="<?=$fullLink?>?pdf=1" target="_blank" class='button' style='text-decoration:none;color:#333333;'>Сохранить в PDF</a></p>

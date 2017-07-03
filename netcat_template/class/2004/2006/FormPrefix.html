@@ -1,0 +1,19 @@
+<form class='_ajax' id='packForm' action='/netcat/modules/netshop/actions/cart.php'
+    data-save='/lichnyy-kabinet/moi-pakety/items.html?nc_ctpl=2007'
+    data-order='/netcat/modules/netshop/actions/cart.php'
+    data-saverdr='<?=$redirect_url?>?edit=1'
+    data-orderrdr='/korzina/'
+    method='post'>
+<input type='hidden' name='pack_id' value='<?=$pack?>'>
+<input type="hidden" name="redirect_url" id='redirect_url' value="<?=$redirect_url?>?edit=1"/>
+<input type="hidden" name="cart_mode" value="add"/>
+<table class="cart">
+                <tr>
+                    <th class="w50">Название</th>
+                    <th>Цена за шт</th>
+                    <th>Кол-во</th>
+                    <th>Цена всего</th>
+                    <th>Наценка на шт</th>
+                    <th>Цена клиента</th>                   
+                    <th></th>
+                </tr>

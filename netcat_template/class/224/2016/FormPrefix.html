@@ -1,0 +1,18 @@
+<?if(!$hideStatus){?>
+<div style='padding: 5px;'>
+<form method='get'>Статус заказа:
+<select name='order_status' style='display: inline-block; width: auto; opacity: 100;'>
+            <option selected value='0'>все</option>
+            <option value='new'>новый</option><?
+            foreach ($status as $row) {
+            ?><option value='<?=$row->ID?>' <?=($row->ID == $s_status ? 'selected' : '')?>><?=$row->Name?></option><?
+            }
+            ?>
+</select>
+<button type="submit">Показать</button>
+</form>
+</div>
+<br />
+<?}?>
+
+<table class='my-orders'>

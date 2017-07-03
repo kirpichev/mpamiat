@@ -1,0 +1,21 @@
+<?php
+$query_where = "a.User_ID = ".(int)$current_user['User_ID'];
+
+if($pdf == 1 && $message){
+  $query_where = "1=0";
+  global $DOCUMENT_ROOT;
+  include($DOCUMENT_ROOT."/_pdf/mpdf.php");
+  $mpdf = new mPDF('utf-8', 'A4', '8', '', 10, 10, 7, 7, 10, 10); /*задаем формат, отступы и.т.д.*/
+  $html = file_get_contents("http://".$HTTP_HOST."/lichnyy-kabinet/moi-pakety/pdf/paket_".$message.".html?isNaked=1&user_id=".$current_user['User_ID']);
+  $stylesheet = file_get_contents("http://".$HTTP_HOST."/_css/pdf.css");
+  $mpdf->charset_in = 'utf-8'; /*не забываем про русский*/
+  $mpdf->WriteHTML($stylesheet, 1);
+  $mpdf->WriteHTML($html, 2); /*формируем pdf*/
+  $mpdf->Output();
+#echo "<hr>".$html;
+  exit;
+
+
+}
+
+?>

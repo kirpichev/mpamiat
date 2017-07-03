@@ -1,0 +1,13 @@
+<?
+$sErrorTxt = '';
+$aErrorFields = array();
+
+if(!$f_Name){
+    $sErrorTxt .= "<li>Необходимо указать <a href='#f_Name'>название пакета</a></li>";
+    $aErrorFields[] = 'Name';
+}
+if($sErrorTxt){
+    $warnText = "<p>Ошибки в заполнении формы</p><ul>".$sErrorTxt."</ul>";
+    $posting = 0;
+}
+?>

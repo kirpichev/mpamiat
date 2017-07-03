@@ -1,0 +1,9 @@
+<?
+$item = new nc_netshop_item($resMsg);
+#nc_netshop::get_instance()->goodslist_recent->add($f_RowID, $classID);
+?>
+<?if($item['Image']){?>
+<img src="<?=$item['Image']?>" alt='' style='max-width:300px;max-height:300px'>
+<?}else{?>
+Нет фото
+<?}?>

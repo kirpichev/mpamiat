@@ -1,0 +1,41 @@
+<?
+$sErrorTxt = '';
+$aErrorFields = array();
+if(!$f_Name){
+    $sErrorTxt .= "<li>Необходимо указать <a href='#f_Name'>ФИО</a></li>";
+    $aErrorFields[] = 'Name';
+}
+if(!$f_Phone){
+    $sErrorTxt .= "<li>Необходимо указать <a href='#f_Phone'>телефон</a></li>";
+    $aErrorFields[] = 'Phone';
+}else if(!preg_match('/((8|\+7)[-\s]?)?\(?\d{3,5}\)?[-\s]?\d{1}[-\s]?\d{1}[-\s]?\d{1}[-\s]?\d{1}[-\s]?\d{1}(([-\s]?\d{1})?[-\s]?\d{1})?/', $f_Phone)){
+    $sErrorTxt .= "<li>Введенный <a href='#f_Phone'>телефон</a> имеет неверный формат</li>";
+    $aErrorFields[] = 'Phone';    
+}
+if(!$f_Type){
+    $sErrorTxt .= "<li>Необходимо указать <a href='#f_Type'>тип пользователя</a></li>";
+    $aErrorFields[] = 'Type';
+}
+if($f_Type == 2){
+    if(!$f_CompanyName){
+      $sErrorTxt .= "<li>Необходимо указать <a href='#f_CompanyName'>название компании</a></li>";
+      $aErrorFields[] = 'CompanyName';    
+    }
+    if(!$f_INN){
+      $sErrorTxt .= "<li>Необходимо указать <a href='#f_INN'>ИНН</a></li>";
+      $aErrorFields[] = 'INN';    
+    }
+    if(!$f_KPP){
+      $sErrorTxt .= "<li>Необходимо указать <a href='#f_KPP'>КПП</a></li>";
+      $aErrorFields[] = 'KPP';    
+    }
+    if(!$f_AddressDeJure){
+      $sErrorTxt .= "<li>Необходимо указать <a href='#f_AddressDeJure'>юридический адрес</a></li>";
+      $aErrorFields[] = 'JurAddress';    
+    }
+}
+if($sErrorTxt){
+    $warnText = "<p>Ошибки в заполнении формы</p><ul>".$sErrorTxt."</ul>";
+    $posting = 0;
+}
+?>

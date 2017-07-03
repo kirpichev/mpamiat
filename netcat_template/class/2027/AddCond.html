@@ -1,0 +1,14 @@
+<?php
+$warnText = '';
+if(!$f_Name){
+    $warnText .= "<p>Вы не указали свое имя</p>";
+}
+if(!$f_Email){
+    $warnText .= "<p>Вы не указали адрес эл почты</p>";
+}
+if(!$f_Tel){
+    $warnText .= "<p>Вы не указали номер телефона</p>";
+}
+if($warnText) $posting = 0;
+
+?>

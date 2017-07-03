@@ -1,0 +1,67 @@
+<!-- FormPrefix --><?if(!$hideStatus){?>
+<div style='padding: 5px;'>
+<form method='get'>Статус заказа:
+<select name='order_status' style='display: inline-block; width: auto; opacity: 100;'>
+            <option selected value='0'>все</option>
+            <option value='new'>новый</option><?
+            foreach ($status as $row) {
+            ?><option value='<?=$row->ID?>' <?=($row->ID == $s_status ? 'selected' : '')?>><?=$row->Name?></option><?
+            }
+            ?>
+</select>
+<button type="submit">Показать</button>
+</form>
+</div>
+<br />
+<?}?>
+
+<table class='my-orders'><!-- /FormPrefix -->
+
+<!-- RecordTemplate --><?
+    $netshop = nc_netshop::get_instance();
+    $order = $netshop->load_order($f_RowID);
+?>
+<tr style="<?=($f_RowNum % 2 ? '' : 'background-color: #EEE;')?>">
+<td style="width: 70%;">
+    <h3>
+    <a href="<?=$fullLink?>">Заказ №<?=$f_RowID?></a> от <?=$f_Created_day?> <?=$months[(int)$f_Created_month]?> <?=$f_Created_year?> года
+    | <a href='' class='show-order-contents' data-alt='Скрыть состав заказа'>Показать состав заказа</a>
+    </h3>
+<div style='display:none' class='my-order-contents'>
+<table>
+<tr>
+<th>Наименование</th>
+<th>Цена за ед., руб.</th>
+<th>Кол-во</th>
+<th>Стоимость, руб.</th>
+</tr>
+<?
+$aOrderItems = $order->get_items();
+foreach ($aOrderItems as $position) {
+$sItemName = $position['Name'] . 
+($position['Size'] || $position['Color']?" (":NULL) . 
+($position['Size']?$position['Size']:NULL) . 
+($position['Size'] && $position['Color']?", ":NULL) . 
+($position['Color']?$position['Color']:NULL) .
+($position['Size'] || $position['Color']?")":NULL);
+echo "<tr>";
+echo "<td>".($position['URL']?"<a href='".$position['URL']."'>".$sItemName."</a>":$sItemName)."</td>";
+echo "<td>".$position['ItemPrice']."</td>";
+echo "<td>".$position['Qty']."</td>";
+echo "<td>".($position['ItemPrice'] * $position['Qty'])."</td>";
+echo "</tr>";
+}
+#print_r($aOrderItems);
+?>
+</table>
+</div>
+Стоимость заказа: <b><?=number_format($order->get_totals(), 0, ',', ' ')?> руб.</b>
+</td>
+<td style='text-align:right'><span>Статус заказа: </span><b><?=($f_Status ? $f_Status : "Новый")?></b></td>
+</tr><!-- /RecordTemplate -->
+
+<!-- FormSuffix --></table>
+<?if($totRows > $recNum){?>
+<br>
+<p style='font-size:12px'><a href='/lichnyy-kabinet/moi-zakazy/'>Все мои заказы</a></p>
+<?}?><!-- /FormSuffix -->

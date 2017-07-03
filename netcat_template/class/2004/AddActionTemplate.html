@@ -1,0 +1,28 @@
+<?
+$isInPack = $db->get_var("
+    SELECT Message_ID
+    FROM Message".$classID." WHERE
+    Message_ID != ".(int)$message." AND
+    GoodsID = ".(int)$f_GoodsID." AND
+    PackID = ".(int)$f_PackID."
+");
+if($isInPack){
+    $db->query("UPDATE Message".$classID." SET Qty = Qty+".(int)$f_Qty." WHERE Message_ID = ".$isInPack);
+    $db->query("DELETE FROM Message".$classID." WHERE Message_ID = ".(int)$message);
+}
+if($inside_admin) {
+    ob_end_clean();
+    header('Location: '.$goBackLink.'&inside_admin=1');
+    exit;
+} elseif($json){
+   $aResult = array(
+        'status'=>'ok',
+        'removeForm'=>1,
+        'okMessage'=>'Товар успешно добавлен в пакет'
+    );
+    echo json_encode($aResult);
+} else { 
+	echo ($IsChecked ? NETCAT_MODERATION_MSG_OBJADD : NETCAT_MODERATION_MSG_OBJADDMOD);
+	echo "<br /><br />".$goBack;
+}
+?>

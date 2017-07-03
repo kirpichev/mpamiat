@@ -1,0 +1,36 @@
+<form class='tomb_search cf' action='/tombs/' method='get'>
+<div class="cf">
+<input name='q' value='<?=$_GET["q"]?>' placeholder='Введите фамилию для поиска'>
+<button type='submit'><img src='<?=$nc_parent_template_folder_path?>i/search-glass.png'></button>
+</div>
+
+<div class="advanced">
+<div class="col">
+<select name="cemetery">
+    <option value="">-выберите кладбище-</option>
+<?
+    $aCemetery = $nc_core->db->get_results("SELECT Burial_ID AS ID, Burial_Name AS Name FROM Classificator_Burial ORDER BY Name",ARRAY_A);
+    foreach($aCemetery AS $aC){
+?>
+    <option value="<?=$aC['ID']?>"<?=($aC['ID'] == (int)$_GET['cemetery']?" selected":NULL)?>><?=$aC['Name']?></option>
+<?}?>
+</select>
+</div>
+
+<div class="col col_2">
+<select name="profession">
+    <option value="">-выберите род деятельности-</option>
+<?
+    $aProfessions = $nc_core->db->get_results("SELECT Professions_ID AS ID, Professions_Name AS Name FROM Classificator_Professions ORDER BY Name",ARRAY_A);
+    foreach($aProfessions AS $aP){
+?>
+    <option value="<?=$aP['ID']?>"<?=($aP['ID'] == (int)$_GET['profession']?" selected":NULL)?>><?=$aP['Name']?></option>
+<?}?>
+</select>
+</div>
+
+
+</div>
+
+</form>
+<hr>

@@ -1,0 +1,103 @@
+<!-- FormPrefix --><form class='_ajax' id='packForm' action='/netcat/modules/netshop/actions/cart.php'
+    data-save='/lichnyy-kabinet/moi-pakety/items.html?nc_ctpl=2007'
+    data-order='/netcat/modules/netshop/actions/cart.php'
+    data-saverdr='<?=$redirect_url?>?edit=1'
+    data-orderrdr='/korzina/'
+    method='post'>
+<input type='hidden' name='pack_id' value='<?=$pack?>'>
+<input type="hidden" name="redirect_url" id='redirect_url' value="<?=$redirect_url?>?edit=1"/>
+<input type="hidden" name="cart_mode" value="add"/>
+<table class="cart">
+                <tr>
+                    <th class="w50">Название</th>
+                    <th>Цена за шт</th>
+                    <th>Кол-во</th>
+                    <th>Цена всего</th>
+                    <th>Наценка на шт</th>
+                    <th>Цена клиента</th>                   
+                    <th></th>
+                </tr><!-- /FormPrefix -->
+
+<!-- RecordTemplate --><?
+$aItem = $db->get_row("
+    SELECT
+        M.Message_ID AS ID, M.Name, M.Price,
+        P.Name AS ParentName, P.Price AS ParentPrice,
+        S.GoodsSizes_Name AS Size, C.GoodsColors_Name AS Color
+    FROM Message".(int)$f_ClassID." AS M
+    LEFT JOIN Message".(int)$f_ClassID." AS P ON M.Parent_Message_ID = P.Message_ID
+    LEFT JOIN Classificator_GoodsSizes AS S ON M.Size = S.GoodsSizes_ID
+    LEFT JOIN Classificator_GoodsColors AS C ON M.Color = C.GoodsColors_ID
+    WHERE M.Message_ID = ".(int)$f_GoodsID."
+",ARRAY_A);
+$iPrice = ($aItem['Price']?$aItem['Price']:$aItem['ParentPrice']);
+if(mb_strpos($f_Surcharge,'%')!== false){
+    $iClientPrice = ((double)$f_Surcharge*0.01+1)*$iPrice*$f_Qty;
+}else{
+    $iClientPrice = ((double)$f_Surcharge+$iPrice)*$f_Qty;
+}
+$iTotalPrice += $iPrice*$f_Qty;
+$iTotalClientPrice += $iClientPrice;
+$sGoodsLink = nc_message_link($f_GoodsID,$f_ClassID);
+?>
+
+<tr>
+    <td>
+    <input type='hidden' name="item[<?=$f_ClassID?>][<?=$f_GoodsID?>]" value="<?=$f_RowID?>">
+    <a href="<?=$sGoodsLink?>">
+        <?=($aItem['Name']?$aItem['Name']:$aItem['ParentName']).
+        ($aItem['Size'] && $aItem['Color']?" (":NULL).
+        ($aItem['Size']?$aItem['Size']:NULL).
+        ($aItem['Size'] && $aItem['Color']?", ":NULL).
+        ($aItem['Size']?$aItem['Color']:NULL).
+        ($aItem['Size'] && $aItem['Color']?")":NULL)?>
+    </a></td>
+    <td class="cost"><?=$iPrice?> р.</td>
+    <td><input type="number" min="0" id="qty_<?=$f_RowID?>" name="cart[<?=$f_ClassID?>][<?=$f_GoodsID?>]" value="<?=$f_Qty?>"></td>
+    <td class="cost"><?=($iPrice*$f_Qty)?> р.</td>
+    <td><input type="text" style='width:50px' name="srch[<?=$f_ClassID?>][<?=$f_GoodsID?>]" value='<?=$f_Surcharge?>' placeholder="Наценка"></td>
+    <td><?=$iClientPrice?> р.</td>
+    <td><button type="button"  onclick="delRow(<?=$f_RowID?>)" class="delete">X</button></td>
+</tr><!-- /RecordTemplate -->
+
+<!-- FormSuffix -->                <tr class="total">
+                    <td colspan="3" style='text-align:right'><b>Итого:</b></td>
+                    <td class="cost"><?=$iTotalPrice?> р.</td>
+                    <td></td>
+                    <td><?=$iTotalClientPrice?> р.</td>
+                    <td></td>
+                </tr>
+<tr class="buttons">
+<!--td><a href="<?=$edit?>">Редактировать</a> | <a href="<?=$drop?>" style='color:#ff3333' class='drop'>Удалить пакет</a></td-->
+<td colspan="6" class="tright">
+    <button type='submit' onclick="setAction('save');">Сохранить</button>
+    <button type='submit' onclick="setAction('order');">Отправить в заказ</button>
+</td>
+</tr>
+</table>
+</form>
+
+<script>
+function setAction(action){
+    $oForm = $('#packForm');
+    $sAction = $oForm.data(action);
+    $oForm.attr('action',$sAction);
+    if(action == 'order'){
+        $sRedirect = $oForm.data('orderrdr');
+//        $oForm.removeClass('ajax');
+    }else{
+        $sRedirect = $oForm.data('saverdr');
+//        $oForm.addClass('ajax');
+    }
+    $('#redirect_url').val($sRedirect);
+}
+
+function delRow(id){
+    if( confirm('Действительно желаете удалить товар из пакета?') ){
+        setAction('save');
+        $('#qty_'+id).val(0);
+        $('#packForm').submit();
+    }
+}
+
+</script><!-- /FormSuffix -->

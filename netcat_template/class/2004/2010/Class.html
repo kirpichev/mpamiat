@@ -1,0 +1,63 @@
+<!-- FormPrefix --><table class="border">
+                <tr>
+                    <th class="w50">Название</th>
+                    <th>Цена за шт</th>
+                    <th>Кол-во</th>
+                    <th>Цена всего</th>
+                </tr><!-- /FormPrefix -->
+
+<!-- RecordTemplate --><?
+$aItem = $db->get_row("
+    SELECT
+        M.Message_ID AS ID, M.Name, M.Price, M.Image,
+        P.Name AS ParentName, P.Price AS ParentPrice, P.Image AS ParentImage,
+        S.GoodsSizes_Name AS Size, C.GoodsColors_Name AS Color
+    FROM Message".(int)$f_ClassID." AS M
+    LEFT JOIN Message".(int)$f_ClassID." AS P ON M.Parent_Message_ID = P.Message_ID
+    LEFT JOIN Classificator_GoodsSizes AS S ON M.Size = S.GoodsSizes_ID
+    LEFT JOIN Classificator_GoodsColors AS C ON M.Color = C.GoodsColors_ID
+    WHERE M.Message_ID = ".(int)$f_GoodsID."
+",ARRAY_A);
+if($aItem['Image']){
+    list(,,,$sImg) = explode(':',$aItem['Image']);
+}else if($aItem['ParentImage']){
+    list(,,,$sImg) = explode(':',$aItem['ParentImage']);
+}
+$iPrice = ($aItem['Price']?$aItem['Price']:$aItem['ParentPrice']);
+if(mb_strpos($f_Surcharge,'%')!== false){
+    $iClientPriceSingle = ((double)$f_Surcharge*0.01+1)*$iPrice;
+    $iClientPrice = ((double)$f_Surcharge*0.01+1)*$iPrice*$f_Qty;
+}else{
+    $iClientPriceSingle = ((double)$f_Surcharge+$iPrice);
+    $iClientPrice = ((double)$f_Surcharge+$iPrice)*$f_Qty;
+}
+$iTotalPrice += $iPrice*$f_Qty;
+$iTotalClientPrice += $iClientPrice;
+?>
+
+<tr>
+    <td>
+        <?=($aItem['Name']?$aItem['Name']:$aItem['ParentName']).
+        ($aItem['Size'] && $aItem['Color']?" (":NULL).
+        ($aItem['Size']?$aItem['Size']:NULL).
+        ($aItem['Size'] && $aItem['Color']?", ":NULL).
+        ($aItem['Size']?$aItem['Color']:NULL).
+        ($aItem['Size'] && $aItem['Color']?")":NULL)?>
+        <?if($sImg){?>
+        <br><img src="/netcat_files/<?=$sImg?>" alt="" width="120px">
+        <?}?>
+    </td>
+    <td align="center" class="cost"><?=number_format($iClientPriceSingle, 0, ',', ' ')?> р.</td>
+    <td align="center"><?=$f_Qty?></td>
+    <td align="center" class="cost"><?=number_format($iClientPrice, 0, ',', ' ')?> р.</td>
+</tr>
+<?
+$sImg = '';
+?><!-- /RecordTemplate -->
+
+<!-- FormSuffix -->                <tr class="total">
+                    <td colspan="3" style='text-align:right'><b>Итого:</b></td>
+                    <td class="cost"><?=number_format($iTotalClientPrice, 0, ',', ' ')?> р.</td>
+                </tr>
+</table>
+<!-- /FormSuffix -->

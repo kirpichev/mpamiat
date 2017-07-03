@@ -1,0 +1,39 @@
+<h1>Подтверждение ответственности за захоронение</h1>
+<?=( $warnText ? "<div class='error warnText'>$warnText</div>" : NULL )?>
+<form name='adminForm' id='adminForm' class='nc-form' enctype='multipart/form-data' method='post' action='<?= $SUB_FOLDER ?><?= $HTTP_ROOT_PATH ?>add.php'>
+
+<input name='admin_mode' type='hidden' value='<?= $admin_mode ?>' />
+<?= $nc_core->token->get_input() ?>
+<input name='catalogue' type='hidden' value='<?= $catalogue ?>' />
+<input name='cc' type='hidden' value='<?= $cc ?>' />
+<input name='sub' type='hidden' value='<?= $sub ?>' /><input name='posting' type='hidden' value='1' />
+<input name='curPos' type='hidden' value='<?= $curPos ?>' />
+<input name='f_Parent_Message_ID' type='hidden' value='<?= $f_Parent_Message_ID ?>' />
+<? $f_BurialID = @$_COOKIE['burial'];?>
+<input type='hidden' name='f_BurialID' value="<?=$f_BurialID?>">
+<table class="kin-confirm"><tr>
+<td class='field_name'>Усопший</td><td><?= $db->get_var("SELECT Name FROM Message2020 WHERE Message_ID = ".(int)$f_BurialID)?></td>
+</tr>
+<tr>
+<td class='field_name'>Ф.И.О. *</td><td><?= nc_string_field('Name', "maxlength='255' size='50'", ($class_id ? $class_id : $classID), 0) ?></td>
+</tr><tr>
+<td class='field_name'>Эл. почта *</td><td><?= nc_string_field('Email', "maxlength='255' size='50'", ($class_id ? $class_id : $classID), 0) ?></td>
+</tr><tr>
+<td class='field_name'>Телефон *</td><td><?= nc_string_field('Tel', "maxlength='255' size='50'", ($class_id ? $class_id : $classID), 0) ?></td>
+</tr><tr>
+<td class='field_name'>Skype</td><td><?= nc_string_field('Skype', "maxlength='255' size='50'", ($class_id ? $class_id : $classID), 0) ?></td>
+</tr><tr>
+<td class='field_name'>Документы, подтверждающие ответственность за захоронение *</td><td><?= $f_Files->form() ?></td>
+</tr><tr>
+<td class='field_name'>Дополнительная информация</td><td><?= nc_text_field('Comments', "", ($class_id ? $class_id : $classID), 0) ?></td>
+</tr><tr>
+<td colspan='2'><div style='font-size:12px'><?= NETCAT_MODERATION_INFO_REQFIELDS ?></div></td>
+</tr>
+<tr>
+<td colspan='2'><button tyle='submit' style='font-size:16px'>Отправить</button></td>
+</tr>
+</table>
+
+
+
+</form>

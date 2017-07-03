@@ -1,0 +1,25 @@
+<!-- FormPrefix --><?= $f_AdminCommon ?>
+<ul class="li4col items fx">
+<!-- /FormPrefix -->
+
+<!-- RecordTemplate --><?php
+
+    $item = new nc_netshop_item($res[$f_RowNum]);
+    echo $f_AdminButtons;
+
+?>
+<table>
+<tr>
+<td width="150"><?=($item['Image']?"<img src='".RESIZER($item['Image'], 105, 165)."'>":NULL)?></td>
+<td>    <h2><?=$item['Name']?></h2>
+    <p><?=$item['Description']?></p>
+    <b>Цена: <?= $item['ItemPriceF'] ?></b>
+</td></tr></table>
+<?
+    echo nc_netshop_item_variant_admin_table($item);
+
+?>
+<br><hr><br><!-- /RecordTemplate -->
+
+<!-- FormSuffix --></li>
+<!-- /FormSuffix -->

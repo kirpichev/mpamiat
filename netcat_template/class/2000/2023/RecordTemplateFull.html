@@ -1,0 +1,66 @@
+<?
+$item = new nc_netshop_item($resMsg);
+nc_netshop::get_instance()->goodslist_recent->add($f_RowID, $classID);
+echo $f_AdminButtons;
+echo nc_netshop_item_variant_admin_table($item);
+?>
+
+<h1><?=$item['FullName']?></h1>
+<section>
+
+                <div class="item_img" style='width:300px;text-align:left'>
+                <?if($item['Image']){?>
+                    <a href="<?=$item['Image']?>" target="_blank" class='image-link'><img src="<?=$item['Image']?>" id='img_<?=$f_RowID?>' style='max-width:200px'></a>
+                <?}?>
+                
+                <?=$item['Photos']?>
+                
+                </div>
+                <div class="item_attr">
+                    <?if(1 || $current_user['User_ID']){?>
+                    <h5>Цена: <?= number_format($item['ItemPrice'], 0, ',', ' ') ?>&nbsp;руб.</h5>
+                    <p class="petit"><?=($item['StockUnits'] !== '0'?"есть в наличии":"нет в наличии")?></p>
+                    <?}?>
+<?
+    $selectors = new nc_netshop_item_variant_selector($item, array('Color', 'Size'));
+    echo $selectors->init(array(
+        'replace_location' => true,
+        'updated_regions' => '.variable-part',
+        'on_update' => ''
+    ));
+?>  
+                <form  class='variable-part add_to_cart_form' action="<?= nc_modules("netshop")->get_add_to_cart_url() ?>" method="post">
+                <input type="hidden" name="redirect_url" value="<?= nc_message_link($item['Message_ID'], $item['Class_ID']) ?>"/>
+                <input type="hidden" name="cart_mode" value="add"/>
+ <?php
+$variants = $item["_Variants"]->where('StockUnits', '0', '!==');
+?>
+<select class="item-variant-list" name="items[]">
+<?php
+$i = 0;
+foreach ($variants as $variant) {
+    echo '<option value="' . $variant["_ItemKey"] . '">' .
+            htmlspecialchars($variant["Color"], ENT_QUOTES) .
+         '</option>';
+}
+?>
+</select> 
+             
+<div id='button-container'>
+<?if($f_Checked && ($current_user['User_ID'] || 1)){?>
+                    <label>Кол-во для заказа</label>
+                    <input type="number" name="qty" min="0" placeholder="1">
+                    <button type='submit' data-id='<?=$f_RowID?>' class='add_to_cart'>В корзину</button>
+<?}?>
+</div>
+                 
+</form>
+                </div>
+
+</section>
+<?if($f_Details){?>
+<div class='item_desc'>
+<h5>Описание</h5>
+<?=$f_Details?>
+</div>
+<?}?>

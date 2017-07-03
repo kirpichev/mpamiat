@@ -1,0 +1,8 @@
+<?php
+$isGoodsPossibe = 0;
+$netshop = nc_netshop::get_instance();
+foreach($netshop->cart->get_items() AS $item){
+    if($item['isNeedGoods']) $isGoodsPossibe = 1;
+}
+
+?>

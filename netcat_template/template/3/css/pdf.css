@@ -1,0 +1,18 @@
+table td{
+	padding:0 5px 5px 0;
+}
+table.border{
+	border-left:1px solid #000000;
+	border-top:1px solid #000000;
+	border-collapse:collapse;
+}
+table.border td,
+table.border th
+{
+	border-right:1px solid #000000;
+	border-bottom:1px solid #000000;
+	padding:5px;
+}
+div{
+	margin-bottom:10px;
+}

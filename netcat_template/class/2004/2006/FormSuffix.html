@@ -1,0 +1,41 @@
+                <tr class="total">
+                    <td colspan="3" style='text-align:right'><b>Итого:</b></td>
+                    <td class="cost"><?=$iTotalPrice?> р.</td>
+                    <td></td>
+                    <td><?=$iTotalClientPrice?> р.</td>
+                    <td></td>
+                </tr>
+<tr class="buttons">
+<!--td><a href="<?=$edit?>">Редактировать</a> | <a href="<?=$drop?>" style='color:#ff3333' class='drop'>Удалить пакет</a></td-->
+<td colspan="6" class="tright">
+    <button type='submit' onclick="setAction('save');">Сохранить</button>
+    <button type='submit' onclick="setAction('order');">Отправить в заказ</button>
+</td>
+</tr>
+</table>
+</form>
+
+<script>
+function setAction(action){
+    $oForm = $('#packForm');
+    $sAction = $oForm.data(action);
+    $oForm.attr('action',$sAction);
+    if(action == 'order'){
+        $sRedirect = $oForm.data('orderrdr');
+//        $oForm.removeClass('ajax');
+    }else{
+        $sRedirect = $oForm.data('saverdr');
+//        $oForm.addClass('ajax');
+    }
+    $('#redirect_url').val($sRedirect);
+}
+
+function delRow(id){
+    if( confirm('Действительно желаете удалить товар из пакета?') ){
+        setAction('save');
+        $('#qty_'+id).val(0);
+        $('#packForm').submit();
+    }
+}
+
+</script>

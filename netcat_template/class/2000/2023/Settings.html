@@ -1,0 +1,39 @@
+<?php
+$isGoodsPossibe = 0;
+$netshop = nc_netshop::get_instance();
+foreach($netshop->cart->get_items() AS $item){
+    if($item['isNeedGoods']) $isGoodsPossibe = 1;
+}
+
+
+if($isGoodsPossibe){
+    //$ignore_catalogue = $ignore_sub = $ignore_cc = 1;
+    
+    //$query_where = "a.Subdivision_ID = ".(int)$cc_settings['SourceSub'];
+    if (!nc_module_check_by_keyword("netshop")) {
+        die (NETCAT_MODULE_NETSHOP_MODULEUNCHECKED);
+    }
+    
+    // Показывать в списке отключенные товары, если у них имеются включенные варианты:
+    if (!$admin_mode) {
+        $ignore_check = true;
+        $query_where .= "(a.`Checked` = 1 OR (a.`Checked` = 0 AND (" .
+            "SELECT `Message_ID` FROM `Message$classID` as `child` " .
+            " WHERE `child`.`Parent_Message_ID` = a.`Message_ID` AND `child`.`Checked` = 1 " .
+            " LIMIT 1" .
+            ")))";
+    }
+    
+    
+    // Параметр request_type установлен, если страница запрошена скриптом переключения варианта товара
+    $request_type = $nc_core->input->fetch_get_post('request_type');
+    
+    $f_Photos_tpl = array(
+        'prefix' => "<div class='gal cf'>",
+        'record' => "<div><a href='%Path%' target='_blank' class='image-link'><img src='%Preview%' /></a></div>",
+        'divider' => " ",
+        'suffix' => "</div>"
+    );
+}else{
+    $ignore_all = 1;
+}

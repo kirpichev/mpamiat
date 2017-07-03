@@ -1,0 +1,17 @@
+<?php
+$warnText = '';
+if(!$f_Tel){
+    $warnText .= "<p>Вы не указали номер телефона</p>";
+}
+if(!$f_Email){
+    $warnText .= "<p>Вы не указали адрес эл. почты</p>";
+}
+if($f_Email && !nc_check_email($f_Email)){
+    $warnText .= "<p>Указанный адрес эл. почты имеет неверный формат</p>";
+}
+if(!$f_GoneName){
+    $warnText .= "<p>Вы не указали ФИО умершего</p>";
+}
+if($warnText) $posting = 0;
+
+?>

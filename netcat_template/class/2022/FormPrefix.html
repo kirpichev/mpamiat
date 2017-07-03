@@ -1,0 +1,25 @@
+<h1>Выберите товары для возложения</h1>
+
+<?if($isGoodsPossibe){?>
+
+<ul class='catalog cf'>
+    <? foreach ($nc_core->nav->get_sub($sub) as $sd): ?>
+        <? if ($sd->active): ?>
+            <li><b><?= $sd->name ?></b></li>
+        <? else: ?>
+            <li>
+                <a href='<?= $sd->url ?>'>
+                <?if($sd->Pic){?>
+                <img src="<?=RESIZER($sd->Pic.$sd->id."/".$sd->Pic_name, 1000, 150)?>"><br>
+                <?}?>
+                <?= $sd->name ?>
+                </a>
+            </li>
+        <? endif ?>
+    <? endforeach ?>
+<ul>
+
+<?}else{?>
+Заказать предметы для возложения можно только вместе с <a href='/care/'>соответствующей услугой</a>
+
+<?}?>
