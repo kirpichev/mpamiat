@@ -204,14 +204,14 @@ if (!$netshop->cart->get_item_count()) {
             "<table>\n<tr>\n",
                 "<th align='left'>" . NETCAT_MODULE_NETSHOP_ITEM . "</th>\n",
                 "<th align='left'>" . NETCAT_MODULE_NETSHOP_ITEM_PRICE . "</th>\n",
-                "<th align='left'>" . NETCAT_MODULE_NETSHOP_QTY . "</th>\n",
+                "<th align='left' class='quantity'><span>" . NETCAT_MODULE_NETSHOP_QTY . "</span><span class='mobile'>кол.</span></th>\n",
                 "<th align='left'>" . NETCAT_MODULE_NETSHOP_COST . "</th>\n",
             ($has_discount_column ? "<th align='left'>Учтенная скидка</th>\n" : "");
 
             foreach ($items as $item) {
                 echo "<tr>",
                 "<td><a href='$item[URL]'>$item[FullName]</a></td>",
-                "<td>$item[ItemPriceF]</td>",
+                "<td>".floor($item[ItemPriceF])."</td>",
                 "<td>$item[Qty]</td>",
                 "<td style='text-align: left;'>".($item[TotalPriceF])."</td>",
                 ($has_discount_column ? "<td align='left' style='text-align: left;'>$item[TotalDiscountF]</td>" : ""),

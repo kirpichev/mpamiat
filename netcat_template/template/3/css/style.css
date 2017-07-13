@@ -158,7 +158,8 @@
 	width:100%;
 }
 .tomb_place_photo img{
-	width:100%
+	width:100%;
+	margin-bottom:20px;
 }
 .tomb_full_name,
 .tomb_full_dt,
@@ -449,9 +450,10 @@
 
 .goods_alert{
 	margin:5px 0;
-	padding:5px 5px 5px 71px;
-	border:3px solid #ee9f22;
-	background:url('../i/icon_alert.png') -10px 50% no-repeat;
+	padding:5px 5px 5px 26px;
+	border:1px solid #ee9f22;
+	background:url('../i/icon_alert.png') 5px 50% no-repeat;
+	background-size:16px auto;
 }
 
 .cf {

@@ -93,18 +93,28 @@ function doService(){
 					Cookies.remove('laying', { path: '/' });
 				}
 				if(typeof burial != 'undefined') Cookies.set('burial', burial, { path: '/' });
-				$.colorbox({
+				$(".iframe_holder .ajax").html('<iframe src="'+url+'" scrolling="yes"></iframe>');
+				$(".iframe_holder, .iframe_overlay").fadeIn(300);
+				$("body").addClass("noscroll");
+/* 				if($(window).width()>=992){
+					var colorbox_width = "90%";
+				}else{
+					var colorbox_width = "100%";
+				} */
+				/* $.colorbox({
 					href:url,
 					iframe:true,
-					width:'80%',
-					height:'80%',
+					fixed:true,
+					width:colorbox_width,
+					height:colorbox_width,
 					overlayClose:false,
 					closeButton:false,
+					reposition:true,
 					onClosed: function(){
 						Cookies.remove('burial', { path: '/' });
 						Cookies.remove('laying', { path: '/' });
 					}
-				});
+				}); */
 			} else {
 				alert('Вы не выбрали услугу');
 			}
@@ -116,10 +126,16 @@ function doService(){
 		var button = $(this);
 		if(button.hasClass('confirm')){
 			if( confirm('Вы уверены? Это очистит вашу корзину') ){
-				$.colorbox.close();	
+				//$.colorbox.close();
+				$("body").removeClass("noscroll");
+				$(".iframe_holder").find("iframe").remove();
+				$(".iframe_holder, .iframe_overlay").hide();
 			}
 		}else{
-			$.colorbox.close();	
+			//$.colorbox.close();
+			$("body").removeClass("noscroll");			
+			$(".iframe_holder").find("iframe").remove();
+			$(".iframe_holder, .iframe_overlay").hide();
 		}
 	})
 }
@@ -388,4 +404,16 @@ function makeAjaxForms(){
 		}
 		return false;
 	});
+}
+
+// Open menu on mobile
+function OpenMenu(){
+	$(".menu_close, .menu_overlay").fadeIn(200);
+	$(".menu_on_mobile").addClass("opened");
+}
+
+// Close menu on mobile
+function CloseMenu(){
+	$(".menu_close, .menu_overlay").fadeOut(200);
+	$(".menu_on_mobile").removeClass("opened");
 }

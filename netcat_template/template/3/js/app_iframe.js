@@ -159,11 +159,11 @@ function doService(){
 			if( confirm('Вы уверены? Это очистит вашу корзину') ){
 				$.post('/netcat/modules/netshop/actions/cart.php','json=1&cart_clear=1',
 				function(data){
-					window.parent.$.colorbox.close();
+					//window.parent.$.colorbox.close();
 				},'json');		
 			}
 		}else{
-			window.parent.$.colorbox.close();
+			//window.parent.$.colorbox.close();
 		}
 	})
 }

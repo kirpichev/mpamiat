@@ -213,7 +213,7 @@ if (!$netshop->cart->get_item_count()) {
             "<div class='cart'><table>\n<tr>\n",
                 "<th align='left'>" . NETCAT_MODULE_NETSHOP_ITEM . "</th>\n",
                 "<th align='left'>" . NETCAT_MODULE_NETSHOP_ITEM_PRICE . "</th>\n",
-                "<th align='left'>" . NETCAT_MODULE_NETSHOP_QTY . "</th>\n",
+                "<th align='left' class='quantity'><span>" . NETCAT_MODULE_NETSHOP_QTY . "</span><span class='mobile'>кол.</span></th>\n",
                 "<th align='left'>" . NETCAT_MODULE_NETSHOP_COST . "</th>\n",
             ($has_discount_column ? "<th align='left'>Учтенная скидка</th>\n" : "");
 
